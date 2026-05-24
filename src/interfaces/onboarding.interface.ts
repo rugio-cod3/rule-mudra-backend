@@ -10,6 +10,7 @@ export interface IFinboxCreateUrlPayload {
   loan_id?: number;
   customerID: number;
   session_expire?: boolean;
+  provider?: "finbox" | "digitap";
 }
 
 export interface IFinboxBankConnectPayload {

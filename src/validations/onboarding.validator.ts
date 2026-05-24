@@ -26,6 +26,7 @@ export const finboxCreateUrlSchema: ObjectSchema<IFinboxCreateUrlPayload> =
     callBackUrl: Joi.string().required(),
     loan_id: Joi.number().required(),
     session_expire: Joi.boolean().optional(),
+    provider: Joi.string().optional(),
   }).unknown(false);
 
 export const finboxBankConnectSchema: ObjectSchema<IFinboxBankConnectPayload> =
@@ -67,7 +68,7 @@ export const panConfirmationSchema: ObjectSchema = Joi.object({
     .required(),
   email: Joi.string()
     .pattern(
-      /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})*$/
+      /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})*$/,
     )
     .max(256)
     .required()
@@ -132,7 +133,7 @@ export const NameAndEmailOnboardingSchema: ObjectSchema<INameEmailOnboardingPayl
   Joi.object<INameEmailOnboardingPayload>({
     email: Joi.string()
       .pattern(
-        /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})*$/
+        /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})*$/,
       )
       .max(256)
       .required()
@@ -259,7 +260,7 @@ export const referenceDetailsSchema: ObjectSchema<IReferenceDetailsPayload> =
       if (
         value.relation_1 === value.relation_2 &&
         ![ReferenceRelation.BROTHER, ReferenceRelation.SISTER].includes(
-          value.relation1
+          value.relation1,
         )
       ) {
         return helpers.error("relation.same");
@@ -370,7 +371,7 @@ export const updateReferenceDetailsSchema: ObjectSchema<IUpdateReferenceDetailsP
       if (
         value.relation_1 === value.relation_2 &&
         ![ReferenceRelation.BROTHER, ReferenceRelation.SISTER].includes(
-          value.relation_1
+          value.relation_1,
         )
       ) {
         return helpers.error("relation.same");

@@ -130,14 +130,14 @@ export class CrifSoftPullService {
        * STAGE 2
        */
       const authorizationResponse = await this.authorize(initiateResponse);
-
+      console.log(
+        "================>authorizationResponse",
+        authorizationResponse,
+      );
       /**
        * OPTIONAL VALIDATION
        */
-      if (
-        authorizationResponse?.status &&
-        authorizationResponse.status !== "S10"
-      ) {
+      if (!authorizationResponse?.reportId && !authorizationResponse.orderId) {
         throw new Error(
           `Authorization failed with status: ${authorizationResponse.status}`,
         );
@@ -147,7 +147,7 @@ export class CrifSoftPullService {
        * STAGE 3
        */
       const bureauResponse = await this.fetchReport(initiateResponse);
-
+      console.log("bureauResponse=============>", bureauResponse);
       return {
         success: true,
         orderId: initiateResponse.orderId,

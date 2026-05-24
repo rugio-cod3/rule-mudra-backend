@@ -1620,16 +1620,16 @@ class CustomerOnboardingController extends ResponseService {
 
   finboxCreateUrl = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { mobile } = req.customer;
-      const { callBackUrl, loan_id, session_expire } = req.body;
-      let leadID = loan_id;
+      const { mobile, customerID } = req.customer;
+      const { callBackUrl, loan_id, session_expire, provider } = req.body;
 
       const payload: IFinboxCreateUrlPayload = {
         mobileNo: String(mobile),
         callBackUrl,
-        leadID,
-        customerID: req.customer.customerID,
+        leadID: Number(loan_id),
+        customerID,
         session_expire,
+        provider: provider || process.env.bankAggregatorProvider || "digitap",
       };
 
       const { data, message, statusCode } =
@@ -1649,14 +1649,20 @@ class CustomerOnboardingController extends ResponseService {
     next: NextFunction,
   ) => {
     try {
-      const { entityId, loan_id } =
-        req.body as IFinboxSessionBankConnectPayload;
+      const { entityId, loan_id, provider } =
+        req.body as IFinboxSessionBankConnectPayload & {
+          provider?: "finbox" | "digitap";
+        };
 
       const { customerID } = req.customer;
-      const payload: IFinboxSessionBankConnectPayload = {
+
+      const payload: IFinboxSessionBankConnectPayload & {
+        provider?: "finbox" | "digitap";
+      } = {
         entityId,
         loan_id,
-        customerID: customerID.toString(),
+        customerID: customerID?.toString(),
+        provider: "digitap",
       };
 
       const { data, message, statusCode } =

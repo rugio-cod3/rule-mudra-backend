@@ -99,4 +99,5 @@ export interface IFinboxSessionBankConnectPayload {
   entityId: string;
   loan_id: number;
   customerID: string;
+  provider?: "finbox" | "digitap";
 }

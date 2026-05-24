@@ -144,6 +144,7 @@ import { IFinboxSessionBankConnectPayload } from "@/interfaces/finbox_new.interf
 import { createStepTrackerEntry } from "@/middlewares/stepCheck2.middleware";
 import { BureauType, CredForgeBreService } from "@/utils/credforge";
 import { CrifSoftPullService } from "@/utils/crif_softpull";
+import { digitapAABankConnect, digitapAACreateUrl } from "@/utils/digitap_aa";
 import * as fs from "fs";
 import puppeteer from "puppeteer";
 import { Readable } from "stream";
@@ -197,7 +198,7 @@ export class OnboardingService extends ResponseService {
     super();
   }
 
-  finboxCreateUrl = async (
+  /* finboxCreateUrl = async (
     payload: IFinboxCreateUrlPayload,
   ): Promise<IServiceResponse> => {
     const { mobileNo, callBackUrl, customerID, session_expire } = payload;
@@ -238,9 +239,102 @@ export class OnboardingService extends ResponseService {
     });
 
     return this.serviceResponse(200, response.data, response.message);
+  }; */
+
+  finboxCreateUrl = async (
+    payload: IFinboxCreateUrlPayload,
+  ): Promise<IServiceResponse> => {
+    const {
+      mobileNo,
+      callBackUrl,
+      customerID,
+      leadID,
+      session_expire,
+      provider,
+    } = payload;
+
+    const selectedProvider =
+      provider || process.env.bankAggregatorProvider || "digitap";
+
+    const redirectUrl = callBackUrl
+      ? callBackUrl
+      : `${config.frontendBaseUrl}${FinboxUrls.CREATE_URL}`;
+
+    /**
+     * DIGITAP AA FLOW
+     */
+    if (selectedProvider === "digitap") {
+      const response = await digitapAACreateUrl({
+        customerID,
+        leadID: Number(leadID),
+        mobileNo,
+        callBackUrl: redirectUrl,
+        session_expire,
+      });
+
+      if (!response.status) {
+        return this.serviceResponse(
+          400,
+          response.data || null,
+          response.message || "Unable to create Digitap AA URL",
+        );
+      }
+
+      return this.serviceResponse(
+        200,
+        {
+          redirect_url: response.data?.redirect_url,
+          request_id: response.data?.request_id,
+          provider: "digitap",
+        },
+        response.message,
+      );
+    }
+
+    /**
+     * EXISTING FINBOX FLOW
+     */
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 3);
+
+    const formattedStartDate = `${String(startDate.getDate()).padStart(
+      2,
+      "0",
+    )}/${String(startDate.getMonth() + 1).padStart(
+      2,
+      "0",
+    )}/${startDate.getFullYear()}`;
+
+    const endDate = new Date();
+
+    const formattedEndDate = `${String(endDate.getDate()).padStart(
+      2,
+      "0",
+    )}/${String(endDate.getMonth() + 1).padStart(
+      2,
+      "0",
+    )}/${endDate.getFullYear()}`;
+
+    const response = await finboxInitiateSession({
+      link_id: customerID.toString(),
+      from_date: formattedStartDate,
+      to_date: formattedEndDate,
+      customerID: customerID.toString(),
+      redirect_url: redirectUrl,
+      session_expire,
+    });
+
+    return this.serviceResponse(
+      200,
+      {
+        ...response.data,
+        provider: "finbox",
+      },
+      response.message,
+    );
   };
 
-  finboxBankConnect = async (
+  /* finboxBankConnect = async (
     payload: IFinboxSessionBankConnectPayload,
   ): Promise<any> => {
     const { entityId, loan_id, customerID } = payload;
@@ -282,6 +376,104 @@ export class OnboardingService extends ResponseService {
         bankConnectResponse.message,
       );
     }
+  }; */
+
+  finboxBankConnect = async (
+    payload: IFinboxSessionBankConnectPayload,
+  ): Promise<IServiceResponse> => {
+    const { entityId, loan_id, customerID, provider } = payload;
+
+    const leadID = Number(loan_id);
+
+    const selectedProvider = "digitap";
+
+    const lead = await this.leadService.findOne({ leadID });
+
+    if (!lead) {
+      throw new NotFoundError("Lead not found");
+    }
+
+    /**
+     * DIGITAP AA FLOW
+     *
+     * entityId = request_id
+     */
+    if (selectedProvider === "digitap") {
+      const digitapBankConnectResponse = await digitapAABankConnect({
+        customerID: Number(customerID),
+        leadID,
+        requestId: entityId,
+      });
+
+      if (
+        !digitapBankConnectResponse.status &&
+        digitapBankConnectResponse?.data?.offerAmount === null
+      ) {
+        return this.serviceResponse(
+          409,
+          digitapBankConnectResponse.data || null,
+          digitapBankConnectResponse.message || "Digitap AA Reject",
+        );
+      }
+
+      if (digitapBankConnectResponse?.data?.retry) {
+        return this.serviceResponse(
+          400,
+          digitapBankConnectResponse.data || null,
+          digitapBankConnectResponse.message || "Retry after 3 sec",
+        );
+      }
+
+      return this.serviceResponse(
+        200,
+        digitapBankConnectResponse.data || {},
+        digitapBankConnectResponse.message,
+      );
+    }
+
+    /**
+     * EXISTING FINBOX FLOW
+     *
+     * entityId = session_id
+     */
+    const getSessionFromRedis = await redisClient.getKey(
+      `finbox_session_${customerID}`,
+    );
+
+    if (!getSessionFromRedis) {
+      throw new NotFoundError("Session ID not found");
+    }
+
+    const bankConnectResponse = await finboxBankConnectInitiate(
+      entityId,
+      customerID,
+      leadID,
+    );
+
+    if (
+      !bankConnectResponse.status &&
+      bankConnectResponse?.data?.offerAmount === null
+    ) {
+      return this.serviceResponse(
+        409,
+        bankConnectResponse.data || null,
+        bankConnectResponse.message || "Finbox Reject",
+      );
+    }
+
+    if (bankConnectResponse?.data?.retry) {
+      return this.serviceResponse(
+        400,
+        bankConnectResponse.data || null,
+        bankConnectResponse.message || "Retry after 3 sec",
+      );
+    }
+
+    return this.serviceResponse(
+      200,
+      bankConnectResponse.data,
+      bankConnectResponse.message,
+    );
   };
 
   sendApplyMail = async (email: string) => {
@@ -5661,7 +5853,7 @@ export class OnboardingService extends ResponseService {
       pincode: String(getCustomerInfo.pincode || ""),
       country: "india",
     });
-
+    console.log("crifResponse=============>", crifResponse);
     if (!crifResponse?.success) {
       throw new BadRequestError("Unable to retrieve CRIF bureau data");
     }
@@ -5684,7 +5876,10 @@ export class OnboardingService extends ResponseService {
     if (!bureauBreResponse.success) {
       throw new BadRequestError("Failed to get Bureau BRE decision");
     }
-
+    console.log(
+      "==============================>bureauBreResponse",
+      bureauBreResponse,
+    );
     const decision = bureauBreResponse.decision;
     let offerAmount = bureauBreResponse.offerAmount;
 

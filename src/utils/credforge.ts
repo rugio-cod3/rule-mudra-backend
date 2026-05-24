@@ -118,8 +118,8 @@ export class CredForgeBreService {
   private apiKey: string;
 
   constructor(config: CredForgeBreConfig) {
-    this.clientID = config.clientID;
-    this.apiKey = config.apiKey;
+    this.clientID = process.env.CREDU_CLIENT_ID!;
+    this.apiKey = process.env.CREDU_API_KEY!;
 
     this.client = axios.create({
       baseURL: config.baseURL || "https://credforge.credeau.com/api",
@@ -138,7 +138,6 @@ export class CredForgeBreService {
   ): Promise<CredForgeBreResponse> {
     try {
       const requestPayload = this.buildBureauBrePayload(payload);
-
       const response = await this.client.post(
         `/execute/${this.clientID}/bureau_mobile_bre`,
         requestPayload,
@@ -147,7 +146,6 @@ export class CredForgeBreService {
           validateStatus: () => true,
         },
       );
-
       if (response.status < 200 || response.status >= 300) {
         throw {
           message: "CredForge Bureau BRE API failed",
@@ -268,7 +266,8 @@ export class CredForgeBreService {
     return {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${this.apiKey}`,
+      "x-client-id": this.clientID,
+      "x-auth-token": this.apiKey,
     };
   }
 
