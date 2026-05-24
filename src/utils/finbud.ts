@@ -7,11 +7,14 @@ import LeadApiLogService from "@/services/lead_api_log.service";
 import axios from "axios";
 import { createDecipheriv } from "crypto";
 import moment from "moment";
+import { cwd } from "process";
 import {
   BureauInsightsRequest,
   IFinBudReportRequestPayload,
 } from "../interfaces/finbud.interface";
 const { v4: uuidv4 } = require("uuid");
+// dev env
+require("dotenv").config({ path: cwd() + "/.env" });
 
 const finBudApiService = new AxiosService(config.finbudBaseUrl);
 const leadApiLogService = new LeadApiLogService();
