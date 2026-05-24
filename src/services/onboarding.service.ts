@@ -5861,8 +5861,8 @@ export class OnboardingService extends ResponseService {
 
     const credForgeBreService = new CredForgeBreService({
       baseURL: process.env.CREDFORGE_BASE_URL!,
-      clientID: process.env.CREDFORGE_CLIENT_ID!,
-      apiKey: process.env.CREDFORGE_API_KEY!,
+      clientID: process.env.CREDU_CLIENT_ID!,
+      apiKey: process.env.CREDU_API_KEY!,
     });
 
     const bureauBreResponse = await credForgeBreService.executeBureauBre({
