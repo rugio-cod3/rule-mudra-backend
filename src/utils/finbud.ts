@@ -167,12 +167,12 @@ export async function fetchCredForgeBankBre(payload: any): Promise<any> {
   };
   const referenceIdUUID = uuidv4();
   const credForgeRequestBody = {
-    auth_token: config.credforgeAuthToken,
-    client_id: config.credforgeClientId,
+    auth_token: process.env.CREDU_API_KEY,
+    client_id: process.env.CREDU_CLIENT_ID,
     user_id: `NC${userId}`,
     reference_id: `RF_${leadID}`,
     input_data: {
-      lead_id: `NL${leadID}`,
+      lead_id: `RM${leadID}`,
       declared_income: monthlyIncome,
       external: {
         bank_type: `bank_aa`,
