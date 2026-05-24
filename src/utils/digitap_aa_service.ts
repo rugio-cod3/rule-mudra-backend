@@ -58,10 +58,13 @@ export class DigitapAccountAggregatorService {
         destination: "accountaggregator",
         return_url: payload.returnUrl,
         mobile_num: payload.mobile,
-        aa_vendor: "dashboard-aa-preprod",
         aa_fetch_type: "ONETIME",
       };
-
+      console.log("===================>payload.returnUrl", payload.returnUrl);
+      console.log(
+        "===================>payload.callbackUrl",
+        payload.callbackUrl,
+      );
       const response = await this.client.post("/generateurl", requestBody, {
         headers: this.getHeaders(),
         validateStatus: () => true,

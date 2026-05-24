@@ -1649,7 +1649,7 @@ class CustomerOnboardingController extends ResponseService {
     next: NextFunction,
   ) => {
     try {
-      const { entityId, loan_id, provider } =
+      const { entityId, loan_id, provider, txn_id } =
         req.body as IFinboxSessionBankConnectPayload & {
           provider?: "finbox" | "digitap";
         };
@@ -1663,6 +1663,7 @@ class CustomerOnboardingController extends ResponseService {
         loan_id,
         customerID: customerID?.toString(),
         provider: "digitap",
+        txn_id,
       };
 
       const { data, message, statusCode } =

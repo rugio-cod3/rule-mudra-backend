@@ -67,8 +67,11 @@ export async function digitapAABankConnect(payload: {
   customerID: number;
   leadID: number;
   requestId: string;
+  txn_id: string;
 }) {
-  const { customerID, leadID, requestId } = payload;
+  const { customerID, leadID, requestId, txn_id } = payload;
+
+  let finalTxnId = txn_id;
 
   if (!requestId) {
     return {
@@ -92,6 +95,24 @@ export async function digitapAABankConnect(payload: {
     clientID: process.env.DIGITAP_CLIENT_ID!,
     clientSecret: config.digitapClientSecret,
   });
+
+  if (!finalTxnId) {
+    const statusResponse = await digitapService.statusCheck(requestId);
+
+    if (!statusResponse.status) {
+      return {
+        status: false,
+        message: statusResponse.message,
+        data: {
+          retry: statusResponse.data?.retry ?? true,
+          request_id: requestId,
+          digitap_status: statusResponse.data,
+        },
+      };
+    }
+
+    finalTxnId = statusResponse.data?.txn_id;
+  }
 
   const statusResponse = await digitapService.statusCheck(requestId);
 

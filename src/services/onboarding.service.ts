@@ -381,7 +381,7 @@ export class OnboardingService extends ResponseService {
   finboxBankConnect = async (
     payload: IFinboxSessionBankConnectPayload,
   ): Promise<IServiceResponse> => {
-    const { entityId, loan_id, customerID, provider } = payload;
+    const { entityId, loan_id, customerID, provider, txn_id } = payload;
 
     const leadID = Number(loan_id);
 
@@ -403,6 +403,7 @@ export class OnboardingService extends ResponseService {
         customerID: Number(customerID),
         leadID,
         requestId: entityId,
+        txnId: txn_id,
       });
 
       if (
