@@ -27,7 +27,7 @@ export enum CredForgeBreDecision {
 }
 
 export enum BureauType {
-  CRIF = "crif",
+  CRIF = "crif_hardpull",
   CIBIL = "cibil",
   EXPERIAN = "experian",
   EQUIFAX = "equifax",

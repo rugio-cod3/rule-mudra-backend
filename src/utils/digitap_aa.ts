@@ -170,8 +170,8 @@ export async function digitapAABankConnect(payload: {
         credforgeResponse.output_data.rules_output.final_decision.Decision,
       offerAmount:
         credforgeResponse.output_data.rules_output.final_decision.LoanAmount,
-      rawBankData: reportResponse.data,
-      bankBreResponse: credforgeResponse,
+      //   rawBankData: reportResponse.data,
+      //   bankBreResponse: credforgeResponse,
     },
   };
 }
