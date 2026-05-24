@@ -5809,6 +5809,14 @@ export class OnboardingService extends ResponseService {
       throw new BadRequestError("Customer information not found!");
     }
 
+    const getCustomerAddress = await this.addressService.findOne({
+      customerID,
+    });
+
+    if (!getCustomerAddress) {
+      throw new BadRequestError("Customer Address information not found!");
+    }
+
     const getLeadsInfo = await this.leadService.findOne(
       { customerID, leadID: loanID },
       ["*"],
@@ -5841,17 +5849,17 @@ export class OnboardingService extends ResponseService {
     });
 
     const crifResponse = await crifService.softPull({
-      firstName: getCustomerInfo.firstName,
-      lastName: getCustomerInfo.lastName,
+      firstName: getCustomerInfo.firstName || "",
+      lastName: getCustomerInfo.lastName || "",
       dob: moment(getCustomerInfo.dob).format("DD-MM-YYYY"),
       mobile: String(getCustomerInfo.mobile),
       email: getCustomerInfo.email,
       pan: getCustomerInfo.pancard,
-      address: getCustomerInfo.address || "",
-      city: getCustomerInfo.city || "",
-      district: getCustomerInfo.district || "",
-      state: getCustomerInfo.state || "",
-      pincode: String(getCustomerInfo.pincode || ""),
+      address: getCustomerAddress.address || "",
+      city: getCustomerAddress.city || "",
+      district: getCustomerAddress.city || "",
+      state: getCustomerAddress.state || "",
+      pincode: String(getCustomerAddress.pincode || ""),
       country: "india",
     });
     console.log("crifResponse=============>", crifResponse);
