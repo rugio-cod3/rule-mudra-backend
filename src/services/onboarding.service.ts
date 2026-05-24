@@ -403,7 +403,7 @@ export class OnboardingService extends ResponseService {
         customerID: Number(customerID),
         leadID,
         requestId: entityId,
-        txnId: txn_id,
+        txn_id,
       });
 
       if (

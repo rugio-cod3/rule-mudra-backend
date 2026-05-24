@@ -23,6 +23,8 @@ export interface IFinboxBankConnectPayload {
   pancard: string;
   step?: string;
   email: string;
+  txn_id?: string;
+  provider?: string;
 }
 
 export interface IPanFetchPayload {

@@ -34,6 +34,8 @@ export const finboxBankConnectSchema: ObjectSchema<IFinboxBankConnectPayload> =
     entityId: Joi.string().required(),
     loan_id: Joi.number().required(),
     step: Joi.string().optional(),
+    txn_id: Joi.string().optional(),
+    provider: Joi.string().optional(),
   }).unknown(false);
 
 export const dashBoardSchema: ObjectSchema<IDashboardPayload> =
