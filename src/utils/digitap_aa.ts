@@ -1,4 +1,3 @@
-import config from "@/config/default";
 import { customerService } from "@/services/customer.service";
 import { leadService } from "@/services/lead.service";
 // import { DigitapAccountAggregatorService } from "@/services/thirdParty/digitapAccountAggregator.service";
@@ -93,7 +92,7 @@ export async function digitapAABankConnect(payload: {
   const digitapService = new DigitapAccountAggregatorService({
     baseURL: process.env.DIGITAP_AA_BASE_URL,
     clientID: process.env.DIGITAP_CLIENT_ID!,
-    clientSecret: config.digitapClientSecret,
+    clientSecret: process.env.DIGITAP_CLIENT_SECRET!,
   });
 
   if (!finalTxnId) {

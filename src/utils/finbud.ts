@@ -21,7 +21,7 @@ const finBudHeader = {
 };
 
 export async function getCutomerReportFinbud(
-  payload: IFinBudReportRequestPayload
+  payload: IFinBudReportRequestPayload,
 ): Promise<any> {
   const finBudURL = `${config.finbudBaseUrl}/report`;
   const { customerID } = payload;
@@ -63,7 +63,7 @@ export async function getCutomerReportFinbud(
       const decipher = createDecipheriv(
         "aes-256-cbc",
         aesKeyBuffer,
-        Buffer.from(decryptionIV, "hex")
+        Buffer.from(decryptionIV, "hex"),
       );
       let decrypted = decipher.update(encryptedReport, "hex", "utf8");
       decrypted += decipher.final("utf8");
@@ -88,7 +88,7 @@ export async function getCutomerReportFinbud(
 }
 
 export async function fetchCredForgeBureauInsights(
-  payload: BureauInsightsRequest
+  payload: BureauInsightsRequest,
 ): Promise<any> {
   const { userId, referenceId, rawData, monthlyIncome, leadID } = payload;
 
@@ -151,14 +151,14 @@ export async function fetchCredForgeBureauInsights(
 
 function encodeBase64(
   data: string,
-  encoding: BufferEncoding = "utf-8"
+  encoding: BufferEncoding = "utf-8",
 ): string {
   return Buffer.from(data, encoding).toString("base64");
 }
 
 export async function fetchCredForgeBankBre(payload: any): Promise<any> {
   const { userId, referenceId, rawData, monthlyIncome, leadID } = payload;
-  const credForgeBankBreURL = `${config.credforgeBaseUrl}/execute/varrenyam/bank_bre`;
+  const credForgeBankBreURL = `${config.credforgeBaseUrl}/execute/${process.env.CREDU_CLIENT_ID}/bank_bre`;
   const headers = {
     "Content-Type": "application/json",
   };
@@ -195,7 +195,7 @@ export async function fetchCredForgeBankBre(payload: any): Promise<any> {
       credForgeRequestBody,
       {
         headers,
-      }
+      },
     );
     const saveCredForgeBankBreData: ILeadsApiLog = {
       customerID: userId,
