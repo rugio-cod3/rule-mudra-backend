@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/service.interface.ts"],"sourcesContent":["export interface serviceResponse {\n  ok: boolean\n  err?: string\n  data?: any\n}\n\nexport interface IServiceResponse{\n  statusCode: number;\n  data: Record<string, any>;\n  message: string;\n}"],"names":[],"mappings":"AAMA,WAIC"}

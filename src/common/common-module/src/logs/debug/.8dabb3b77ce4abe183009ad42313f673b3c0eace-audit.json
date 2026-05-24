@@ -1,0 +1,45 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/.8dabb3b77ce4abe183009ad42313f673b3c0eace-audit.json",
+    "files": [
+        {
+            "date": 1777625826344,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-01.log",
+            "hash": "9b92f8e499a66a9716364377b769202b43d068abf0f9b19340f6800753397842"
+        },
+        {
+            "date": 1778444698139,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-11.log",
+            "hash": "552db557c2afebe0f219a84457341471fd3e447dbc16aee0d57ba699f7d48b1b"
+        },
+        {
+            "date": 1778704322934,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-14.log",
+            "hash": "57b4863413a81180fb722b534e3c4b7200ec5ee05ef498a2f347dde14607a71f"
+        },
+        {
+            "date": 1778784879289,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-15.log",
+            "hash": "02d76636803e29fca126a7bd15db52c7bf4064e86d9250b51c101a02917bf92e"
+        },
+        {
+            "date": 1779447602109,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-22.log",
+            "hash": "0aba945e88e2a4e0f37a0005085cc37f9fc6b07cdc9f1d423eb8f136396e299f"
+        },
+        {
+            "date": 1779475121871,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-23.log",
+            "hash": "b8575e28df7e390676e9981e84ac6b86b02140ce61c7d4041bd9b56bb29d541d"
+        },
+        {
+            "date": 1779570797061,
+            "name": "/Users/varrenyam/projects/rugio/hexa/rule-mudra/src/common/common-module/src/logs/debug/2026-05-24.log",
+            "hash": "ac4cc67fb15ad2916215d727f0748cb3485397ac8695d8a3f566c16cc27804e6"
+        }
+    ],
+    "hashType": "sha256"
+}

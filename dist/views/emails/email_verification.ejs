@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    a {
+      text-decoration: none;
+    }
+
+    p {
+      font-family: math;
+      font-size: large;
+    }
+
+    .header {
+      cursor: pointer;
+      display: inline-flex !important;
+      align-items: center;
+      transition: all .135s ease-in-out;
+      transform: scale(1.001);
+      color: #fff !important;
+      background-color: #3273e4 !important;
+      width: 98%;
+      height: 110px;
+      border-radius: 15px;
+      font-size: xxx-large;
+    }
+
+    .btn {
+      cursor: pointer;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      transition: all .135s ease-in-out;
+      transform: scale(1.001);
+    }
+
+    .primery {
+      color: #fff !important;
+      background-color: #42bf33 !important;
+      width: -webkit-fill-available;
+      height: 50px;
+      border-radius: 15px;
+      font-size: xx-large;
+    }
+
+    .container {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      padding-right: calc(var(--bs-gutter-x)* 3.5);
+      padding-left: calc(var(--bs-gutter-x)* 3.5);
+    }
+
+    .gap-2 {
+      padding: 7px;
+    }
+  </style>
+</head>
+
+<body>
+  <table style="width: 850px; border: 1px solid white;">
+    <tr>
+      <td colspan="2">
+        <a href="https://ramfincorp.com" class="header" style="padding: 20px 0px 0px 36px; width: -webkit-fill-available;">
+          <span class="">
+            <!-- <img src="/public/mail/images/header-icon.png"> -->
+          </span>
+          Ram Fincorp
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding: 3%;">
+        <h1 style="text-align:center">Email Verification OTP</h1>
+        <p></p>
+        <p>Dear <%= name %>,</p>
+        <p></p>
+        <p>Your Verification code is - <%= otp %></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p><strong>&nbsp;</strong></p>
+        <p>Best,<br>Ram Fincorp Team</p>
+        <!--<p>Team Ramfin Corp.in</p>-->
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <p style="text-align: center; font-size: x-large; margin: 23px 0px 55px 0px; "> Need Any Help OR Have any Questions ?: <span class="">
+            <a href="https://ramfincorp.com/contact-us">Contact US</a>
+          </span></p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <p style="text-align: center; font-size: x-large;">For Download Our App Click The Download:</p>
+        <a href="https://play.google.com/store/apps/details?id=com.ramfinloan&pli=1" target="_blank" class="btn primery" style=" padding: 6px 0px 0px 76px; line-height: 50px; width: 30%; margin-left: 35%; font-size:x-large; margin-right: 35%;">Download App</a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <hr style="margin-top: 5%;
+        margin-bottom: 6%;">
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0% 0% 2% 0%;">
+        <a href="https://ramfincorp.com" class="app-brand-link gap-2">
+          <span class="">
+            <!-- <img src="/public/mail/images/footerlogo.png"> -->
+          </span>
+        </a>
+      </td>
+      <td style="padding: 0% 0% 2% 0%;">
+        <a class="btn" style="font-size: x-large;">
+          <span class="">
+            <!-- <img src="/public/mail/images/rbi.png" width="50" style="margin-right:20px;"> -->
+          </span>
+          Licensed By Reserve Bank Of India
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="font-size: x-large;">
+        <p>Ram Fincorp, Karol Bagh , Delhi, India</p>
+      </td>
+      <td>
+        <div style="float: right;">
+          <span class="">
+            <!-- <a href="https://www.instagram.com/ramfincorpindia/" class="app-brand-link gap-2">
+              <img src="/public/mail/images/insta.png">
+            </a>
+            <a href="https://www.facebook.com/people/Ram-Fincorp/100086078184482/" class="app-brand-link gap-2">
+              <img src="/public/mail/images/fb.png">
+            </a>
+            <a href="#" class="app-brand-link gap-2">
+              <img src="/public/mail/images/x.png">
+            </a>
+            <a href="https://www.linkedin.com/company/ram-fincorp/" class="app-brand-link gap-2">
+              <img src="/public/mail/images/in.png">
+            </a> -->
+          </span>
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

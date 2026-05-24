@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sanction Letter & Key Fact Statement</title>
+    <style>
+      /* --- KEEPING YOUR EXISTING CSS EXACTLY AS IT IS --- */
+      .logos {
+        display: flex;
+        justify-content: space-between; /* puts one left, one right */
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .logos img {
+        max-width: 170px;
+        height: auto;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+      .document-container {
+        width: 100%;
+        max-width: 1000px; /* or 1200px */
+        margin: 20px auto;
+        background: white;
+        padding: 40px;
+      }
+
+      .document-header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+      }
+      .document-header h1 {
+        color: #2c3e50;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      .basic-info {
+        margin-bottom: 25px;
+      }
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      .info-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+      }
+      .info-table td:first-child {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+      .intro-text {
+        margin-bottom: 25px;
+        text-align: justify;
+        font-size: 14px;
+      }
+      .intro-text p {
+        margin-bottom: 15px;
+        color: #555;
+      }
+      .loan-details h3,
+      .loan-parameters h3,
+      .contingent-charges h3,
+      .other-disclosures h3,
+      .repayment-schedule h3,
+      .terms-conditions h3 {
+        color: #2c3e50;
+      }
+      .details-table,
+      .parameters-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      .details-table td,
+      .parameters-table td {
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      .details-table td:first-child,
+      .parameters-table td:first-child {
+        width: 50px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .details-table td:nth-child(2),
+      .parameters-table td:nth-child(2) {
+        width: 50%;
+        font-weight: bold;
+      }
+      .details-table td:last-child,
+      .parameters-table td:last-child {
+        width: 40%;
+      }
+      .parameters-table th {
+        background-color: #f0f0f0;
+        color: #333333;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #ddd;
+      }
+      .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      .schedule-table th,
+      .schedule-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        background-color: white;
+      }
+      .schedule-table th {
+        background-color: #f0f0f0;
+        color: #333333;
+        font-weight: bold;
+      }
+      .schedule-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+      .terms-conditions {
+        margin-top: 30px;
+      }
+      .terms-conditions ol {
+        margin-left: 20px;
+        font-size: 14px;
+      }
+      .terms-conditions li {
+        margin-bottom: 12px;
+        text-align: justify;
+        line-height: 1.5;
+      }
+      .terms-conditions ul {
+        margin-left: 20px;
+        margin-top: 8px;
+      }
+      .terms-conditions ul li {
+        margin-bottom: 5px;
+      }
+      .acknowledgement {
+        margin-top: 40px;
+        padding-top: 20px;
+      }
+      .acknowledgement p {
+        margin-bottom: 15px;
+      }
+      .signature-area {
+        margin-top: 30px;
+        text-align: left;
+      }
+      .signature-area p {
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="document-container">
+      <div class="logos">
+        <img
+          src="https://nexiloans.s3.ap-south-1.amazonaws.com/logo.svg"
+          alt="Nexiloans logo"
+          class="logo-left"
+        />
+        <% if (lender_detail && lender_detail.lenderID === 2) { %>
+          <img
+            src="https://nexiloans.s3.ap-south-1.amazonaws.com/nandanvan.png"
+            alt="New lender logo"
+            class="logo-right"
+          />
+        <% } else { %>
+          <img
+            src="https://nexiloans.s3.ap-south-1.amazonaws.com/yashikLoans.png"
+            alt="Yashik loans logo"
+            class="logo-right"
+          />
+        <% } %>
+        <!-- <img
+          src="https://nexiloans.s3.ap-south-1.amazonaws.com/yashikLoans.png"
+          alt="Yashik loans logo"
+          class="logo-right"
+        /> -->
+      </div>
+      <header class="document-header">
+        <h1>SANCTION LETTER & KEY FACT STATEMENT</h1>
+      </header>
+
+      <section class="basic-info">
+        <table class="info-table">
+          <tr>
+            <td>Date</td>
+            <td>Name of R.E.</td>
+            <td>Applicant Name</td>
+            <td>Loan Number</td>
+          </tr>
+          <tr>
+            <td>
+              <% if (approval_detail && approval_detail.createdDate) { %> <%=new Date(approval_detail.createdDate).toLocaleDateString('en-GB')%> <% } else { %> <%= new Date().toLocaleDateString('en-GB') %> <%} %>
+            </td>
+            <td>
+              <% if (lender_detail && lender_detail.lender_display_name) { %><%= lender_detail.lender_display_name %> <% } else { %> Yashik Finlease Private Limited <% } %>
+            </td>
+              <td>
+              <% if (customer_detail && (customer_detail.customerName || customer_detail.name)) { %> <%= customer_detail.customerName || customer_detail.name %> <% } else { %> N/A <% } %>
+            </td>
+            <td>
+              <%= (loan_detail && loan_detail.loanNo) ? loan_detail.loanNo : "N/A" %>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="intro-text">
+        <p>
+          <strong>
+            M/s. <%= (lender_detail && lender_detail.lender_display_name) ? lender_detail.lender_display_name : "Yashik Finlease Private Limited" %>
+          </strong>
+          ("Lender/ R.E.") is pleased to inform you ("Borrower") that you are
+          eligible for a loan facility, subject to the terms and conditions set
+          out herein.
+        </p>
+        <p>
+          The Loan is being facilitated through the technology platform of <strong>M/s. Nexi Fintech Private Limited</strong> ("Lending Service Provider" or "LSP"), pursuant to an arrangement between <%= (lender_detail && lender_detail.lender_display_name) ? lender_detail.lender_display_name : "Yashik Finlease Private Limited" %> and Nexi Fintech Private Limited.
+        </p>
+        <p>
+          We are pleased to communicate the <em>in-principal</em> sanction of
+          the loan facility, the details of which are set forth below:
+        </p>
+      </section>
+
+      <section class="loan-details">
+        <h3>Key Loan Terms</h3>
+        <table class="details-table">
+          <tr>
+            <td>1</td>
+            <td>Lender</td>
+            <td>
+              <%= (lender_detail && lender_detail.lender_display_name) ? lender_detail.lender_display_name : "Yashik Finlease Private Limited" %>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>LSP</td>
+            <td>Nexi Fintech Private Limited</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Proposal Validity</td>
+            <td>5 days</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Application ID</td>
+            <td>
+              <%= (lead_detail && lead_detail.leadID) ? lead_detail.leadID : "N/A" %>
+            </td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><h3>Applicant Details</h3></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Name</td>
+            <td>
+              <% if (customer_detail && (customer_detail.customerName || customer_detail.name)) { %> <%= customer_detail.customerName || customer_detail.name %> <% } else { %> N/A <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Address</td>
+            <td>
+              <% if (address && address.address) { %> <%= address.address %> <% } else { %> N/A <% } %>
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td>PAN</td>
+            <td>
+              <%= (customer_detail && customer_detail.pancard) ? customer_detail.pancard : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Aadhaar</td>
+            <td>
+              XXXX-XXXX-<%= (customer_detail && customer_detail.aadharNo) ? customer_detail.aadharNo : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Date Of Birth</td>
+            <td>
+              <%= (customer_detail && customer_detail.dob) ? new Date(customer_detail.dob).toLocaleDateString('en-GB') : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Mobile</td>
+            <td>
+              <% if (customer_detail && (customer_detail.mobileNo || customer_detail.mobile)) { %> <%= customer_detail.mobileNo || customer_detail.mobile %> <% } else { %> N/A <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Email</td>
+            <td>
+              <% if (customer_detail && (customer_detail.email || customer_detail.emailId)) { %> <%= customer_detail.email || customer_detail.emailId %> <% } else { %> N/A <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Purpose</td>
+            <td>
+              <%= (lead_detail && lead_detail.purpose) ? lead_detail.purpose : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><h3>Disbursement Through Bank Transfer</h3></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Bank Name</td>
+            <td>
+              <%= (account_detail && account_detail.bank_name) ? account_detail.bank_name : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>IFSC Code</td>
+            <td>
+              <%= (account_detail && account_detail.ifsc) ? account_detail.ifsc : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Account Number</td>
+            <td>
+              <%= (account_detail && account_detail.account_number) ? account_detail.account_number : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Tenure (in Days)</td>
+            <td>
+              <%= (approval_detail && approval_detail.tenure) ? approval_detail.tenure : "N/A" %>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="loan-parameters">
+        <h3>Financial Terms</h3>
+        <table class="parameters-table">
+          <tr>
+            <th>Sr. No.</th>
+            <th>Parameters</th>
+            <th>Amount (₹)</th>
+          </tr>
+          <tr>
+            <td>(i)</td>
+            <td>Loan Sanctioned</td>
+            <td>
+              <%= (approval_detail && approval_detail.loanAmtApproved) ? approval_detail.loanAmtApproved : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td>(ii)</td>
+            <td>Total Interest Payable</td>
+            <td><%= intem ? Math.round(intem) : "N/A" %></td>
+          </tr>
+          <tr>
+            <td>(iii)</td>
+            <td>Processing Fees</td>
+            <td>
+              <%= (approval_detail && approval_detail.adminFee) ? Math.round(approval_detail.adminFee) : "NIL" %>
+            </td>
+          </tr>
+          <tr>
+            <td>(iv)</td>
+            <td>Net Disbursement ((i)-(iii))</td>
+            <td><%= fdb ? Math.round(fdb) : "N/A" %></td>
+          </tr>
+          <tr>
+            <td>(v)</td>
+            <td>Total Amount Payable by Borrower ((i)+(ii))</td>
+            <td><%= rep1 ? Math.round(rep1) : "N/A" %></td>
+          </tr>
+          <tr>
+            <td>(vi)</td>
+            <td>Interest Rate Per day (%)</td>
+            <td>
+              <%= (approval_detail && approval_detail.roi) ? approval_detail.roi : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td>(vii)</td>
+            <td>Annual Percentage Rate (APR)%</td>
+            <td><%= apr ? apr.toFixed(2) : "N/A" %></td>
+          </tr>
+          <tr>
+            <td>(viii)</td>
+            <td>Tenure (in Days)</td>
+            <td>
+              <%= (approval_detail && approval_detail.tenure) ? approval_detail.tenure : "N/A" %>
+            </td>
+          </tr>
+          <tr>
+            <td>(ix)</td>
+            <td>No. of Instalments</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>(x)</td>
+            <td>Instalment Amount</td>
+            <td><%= rep1 ? Math.round(rep1) : "N/A" %></td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="contingent-charges">
+        <h3>Contingent Charges</h3>
+        <table class="parameters-table">
+          <tr>
+            <td>1</td>
+            <td>Penal charges for delay in payments of dues</td>
+            <td>₹100 per day for the delay</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>NACH/e-Mandate Bounce Charges</td>
+            <td>₹500 + GST</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Statement of Account (SOA) Charges</td>
+            <td>Nil</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="other-disclosures">
+        <h3>Other Disclosures</h3>
+        <table class="parameters-table">
+          <tr>
+            <td>1</td>
+            <td>Cooling-off / Look-up Period</td>
+            <td>3 days</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              Details of LSP acting as recovery agent and authorized to approach
+              the borrower
+            </td>
+            <td>Nexi Fintech Private Limited</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>
+              Name, designation, address and phone number of nodal grievance
+              redressal officer designated specifically to deal with FinTech/
+              digital lending related complaints/ issues
+            </td>
+            <td>
+              <strong>Name :Mr.Karan Singh</strong><br />
+              <strong>Designation: Manager (Compliance)</strong><br />
+              <strong
+                >Address: 410, Enkay Center, A Wing, Udyog Vihar, Phase-V,
+                Gurugram, Haryana-122016</strong
+              ><br />
+              <strong>Email : karan.singh@nexiloans.com</strong>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="repayment-schedule">
+        <h3>Repayment Schedule (Tentative)</h3>
+        <table class="schedule-table">
+          <tr>
+            <th>Instalment No.</th>
+            <th>Principal (₹)</th>
+            <th>Interest (₹)</th>
+            <th>Instalment (₹)</th>
+            <th>Due Date</th>
+          </tr>
+          <tr>
+            <td>One</td>
+            <td>
+              <%= (approval_detail && approval_detail.loanAmtApproved) ? approval_detail.loanAmtApproved : "N/A" %>
+            </td>
+            <td><%= intem ? Math.round(intem) : "N/A" %></td>
+            <td><%= rep1 ? Math.round(rep1) : "N/A" %></td>
+            <td>
+              <%= (approval_detail && approval_detail.repayDate) ? new Date(approval_detail.repayDate).toLocaleDateString('en-GB') : "N/A" %>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="terms-conditions">
+        <h3>General Terms & Conditions</h3>
+        <ol>
+          <li>
+            This Sanction Letter is issued on the basis of documents and
+            details submitted by the Applicant. In the event of any discrepancy,
+            the Lender reserves the right to revoke this sanction.
+          </li>
+          <li>
+            The disbursement of the sanctioned loan is subject to:
+            <ul>
+              <li>
+                - Execution and acceptance of the Loan Agreement, which shall
+                supersede this Sanction Letter in case of conflict.
+              </li>
+              <li>
+                - Borrower's express consent to the tenure, interest rate, and
+                terms specified herein.
+              </li>
+            </ul>
+          </li>
+          <li>
+            The Lender shall have the right to revoke this sanction if it is
+            not accepted within five (5) days from the date of issuance.
+          </li>
+          <li>
+            APR has been computed as the effective annualized interest rate
+            on the net disbursed amount, using the IRR (Internal Rate of Return)
+            approach.
+          </li>
+          <li>
+            Within the Cooling-off Period, the Borrower may prepay the loan
+            principal without incurring any prepayment penalty. Post this
+            period, prepayment charges shall apply.
+          </li>
+          <li>
+            In the event of default, the Lender and/or the Reserve Bank of
+            India (RBI) and/or Credit Information Companies (CICs) may publish
+            the Borrower's name as a defaulter, at their sole discretion.
+          </li>
+          <li>
+            The Borrower hereby consents to the Lender disclosing and sharing
+            their personal and financial information with RBI, CICs,
+            professional advisors, affiliates, service providers, and any other
+            agency authorized under applicable law.
+          </li>
+          <li>For more information, Please visit the link below:</li>
+          <li>
+            <a href="https://nexiloans.com/PrivacyPolicy"
+              >https://nexiloans.com/PrivacyPolicy</a
+            >
+          </li>
+        </ol>
+      </section>
+
+      <section class="acknowledgement">
+        <br />
+        <h3><strong>Acknowledgement</strong></h3>
+        <p>
+          <% if (customer_detail && (customer_detail.customerName || customer_detail.name)) { %> I, <%= customer_detail.customerName || customer_detail.name %>, hereby acknowledge that I have read, understood, and accepted the terms and conditions specified herein and in the Loan Proposal. <% } else { %> I, (Name of borrower), hereby acknowledge that I have read, understood, and accepted the terms and conditions specified herein and in the Loan Proposal. <% } %>
+        </p>
+        <div class="signature-area">
+          <p>
+            Acknowledgement Date: <%= new Date().toLocaleDateString('en-GB') %>
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

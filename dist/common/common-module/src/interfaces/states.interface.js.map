@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/states.interface.ts"],"sourcesContent":["\nexport interface IState {\n    stateID: number\n    stateName: string\n    status: number\n    createdDate: Date\n    code: string\n    cibil_state_code: string\n  }\n  \n  export type TSelectState = keyof IState\n  "],"names":[],"mappings":"AAUE,WAAuC"}

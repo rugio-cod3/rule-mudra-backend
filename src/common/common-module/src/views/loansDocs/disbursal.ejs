@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DISBURSAL LETTER</title>
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header,
+        .footer {
+            text-align: center;
+        }
+        .header img,
+        .footer img {
+            width: 100%;
+            max-height: 150px;
+        }
+        .title {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .CustomPadding {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        
+        .download-btn {
+            display: block;
+            padding: 10px 20px;
+            text-align: center;
+            line-height: 50px;
+            width: 30%;
+            margin: 20px auto;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #42bf33;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        </style>
+    </head>
+    <body>
+
+        <div class="CustomPadding">
+            <div class="title">DISBURSAL LETTER</div>
+
+            <div class="content">
+                <p></p>
+                <p>Dear <%= data.name %>,</p>
+                <p></p>
+                <p>Loan Number: <%= data.loanNo %></p>
+                <p></p>
+                <p>Sub: Your loan for Rs <%= data.disbursalAmount %> is disbursed</p>
+                <p></p>
+                <p>We are pleased to have disbursed a loan for Rs. <%= data.disbursalAmount %> @ <%= data.roi %> interest for a period of <%= data.tenure %> on the terms and conditions agreed by you.</p>
+                <p></p>
+                <p><%= data.productID == 2 ? `Your repayment amount is Rs. ${data.repayAmount}` : `Your monthly EMI amount is Rs. ${data.repayAmount}` %></p>
+                <p></p>
+                <p>Please repay on due date to avoid penal charges.</p>
+                <p></p>
+                <p>Repaying this loan on time will keep your record straight, not only with us but also in the Bureaus. We are always there with you, and you can take another loan from us immediately after repayment</p>
+                <p></p>
+                <p><strong>&nbsp;</strong></p>
+                <p>Best regards,<br><%= data.lenderName %></p>
+            </div>
+            <div class="content">
+                <div>
+                    <p style="text-align: center; font-size: x-large; margin: 23px 0px 55px 0px; "> Need Any Help OR Have any Questions ?: <span class="">
+                        <span>
+                            <a href=https://<%= data.lenderUrl %>/contact-us>CONTACT US</a>
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    <p style="text-align: center; font-size: x-large;">For Download Our App Click The Download:</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.ramfinloan&pli=1" 
+                    target="_blank" 
+                    class="download-btn">
+                        Download App
+                    </a>
+                </div>
+            </div>
+            <br>    
+            <br>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statement of Account</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header img {
+      max-width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .header h2 {
+      font-size: 20px;
+      margin: 5px 0;
+    }
+
+    .horizontal-line {
+      border-top: 1px solid #000;
+      margin: 10px 0;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .detail-row {
+      margin-bottom: 5px;
+    }
+
+    .detail-row span {
+      display: inline-block;
+      width: 48%;
+      box-sizing: border-box;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .content {
+      width: 100%;
+    }
+
+    .left,
+    .right {
+      display: inline-block;
+      width: 48%;
+      vertical-align: top;
+    }
+
+    .date {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #f2f2f2;
+    }
+
+    .custom-color {
+      color: black;
+      background-color: rgb(63, 65, 61);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="date">
+      <p><strong>Date: </strong>
+        <%= data.date %>
+      </p>
+    </div>
+    <div class="header">
+      <img
+        src="data:image/png;base64,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"
+        alt="ramfincorp Logo" style="max-width: 200px; height: auto" />
+      <h1>Ram Fincorp</h1>
+      <h2>Statement of Account</h2>
+      <p>From <%= data.fromDate %> to <%= data.toDate %>
+      </p>
+    </div>
+    <div class="horizontal-line"></div>
+    <div class="section">
+      <div class="content"></div>
+      <div class="left">
+        <div class="detail-row">
+          <span class="bold">Customer Name:</span>
+          <span>
+            <%= data.customer.name %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Loan No.:</span>
+          <span>
+            <%= data.loan.loanNo %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">PAN No.:</span>
+          <span>
+            <%= data.customer.pancard %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Address:</span>
+          <span>
+            <%= data.address.address %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Mobile No.:</span>
+          <span>
+            <%= data.customer.mobile %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Product:</span>
+          <span>
+            <%= data.loan.product %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Disbursal Date:</span>
+          <span>
+            <%= data.loan.disbursalDate %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Installment Period:</span>
+          <span>
+            <%= data.emi.installmentPeriod %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">EMI Amount:</span>
+          <span>
+            <%= data.emi.emiAmount %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Rate of Interest (Annual):</span>
+          <span>
+            <%= data.emi.roi %>%
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Pentalty Interest (Annual):</span>
+          <span>
+            <%= data.emi.penaltyInterest %>%
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Write Off Amount</span>
+          </br>
+          </br>
+          &nbsp;
+          <span>Principle:</span>
+          <span>
+            <%= data.emi.writeOffAmount.principle %>
+          </span>
+          &nbsp;
+          <span>Interest:</span>
+          <span>
+            <%= data.emi.writeOffAmount.interest %>
+          </span>
+          &nbsp;
+          <span>Charges:</span>
+          <span>
+            <%= data.emi.writeOffAmount.charges %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">DPD:</span>
+          <span>
+            <%= data.emi.dpd %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Restructured</span>
+          <span>
+            <%= data.emi.restructured %>
+          </span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="detail-row">
+          <span class="bold">Processing Fee (One Time):</span>
+          <span>
+            <%= data.emi.processingFee %>%
+          </span>
+        </div>
+
+        <div class="detail-row">
+          <span class="bold">GST on Processing Fee:</span>
+          <span>
+            <%= data.emi.gst %>%
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Tenure in Months:</span>
+          <span>
+            <%= data.emi.tenure %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Loan Amount:</span>
+          <span>
+            <%= data.emi.loanAmount %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Disbursed Amount:</span>
+          <span>
+            <%= data.emi.disbursedAmount %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Repayment Amount:</span>
+          <span>
+            <%= data.emi.repayAmount %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Installment Overdue:</span>
+          <span>
+            <%= data.emi.installmentOverdue %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Installment Paid:</span>
+          <span>
+            <%= data.emi.installmentPaid %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Principle Paid:</span>
+          <span>
+            <%= data.emi.principlePaid %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Interest Paid:</span>
+          <span>
+            <%= data.emi.interestPaid %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Other Charges Paid:</span>
+          <span>
+            <%= data.emi.otherChargesPaid %>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="bold">Outstanding Amount:</span>
+          <span>
+            <%= data.emi.outstandingAmount %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="horizontal-line"></div>
+    <div class="section">
+      <table>
+        <tr class="custom-color">
+          <th>Txn Date</th>
+          <th>Particular</th>
+          <th>Debit</th>
+          <th>Credit</th>
+          <th>Closing Balance</th>
+        </tr>
+        <% data.transactions.forEach(transaction=> { %>
+          <tr>
+            <td class="col_css">
+              <%= transaction.txnDate %>
+            </td>
+            <td class="col_css">
+              <%= transaction.particular %>
+            </td>
+            <td class="col_css">
+              <%= transaction.debit %>
+            </td>
+            <td class="col_css">
+              <%= transaction.credit %>
+            </td>
+            <td class="col_css">
+              <%= transaction.closingBalance %>
+            </td>
+          </tr>
+        <% }) %>
+      </table>
+    </div>
+    <div class="horizontal-line"></div>
+    <div class="section">
+      <table>
+        <tr>
+          <th class="custom-color">Total</th>
+          <td class="col_css" style="width:300px"></td>
+          <td class="col_css"> Rs. <%= data.totalDebit %></td>
+          <td class="col_css"> Rs <%= data.totalCredit %></td>
+          <td class="col_css" style="width:100px"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>

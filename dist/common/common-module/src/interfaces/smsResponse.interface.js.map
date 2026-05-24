@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/smsResponse.interface.ts"],"sourcesContent":["export interface ISMSResponse {\n    success: boolean\n    statusCode: Number,\n    data?:object\n  }"],"names":[],"mappings":"AAAA,WAIG"}

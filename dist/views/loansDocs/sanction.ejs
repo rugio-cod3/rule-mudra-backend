@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sanction Letter</title>
+   
+    <style>
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      .header,
+      .footer {
+        text-align: center;
+      }
+
+      .header img,
+      .footer img {
+        width: 100%;
+        max-height: 150px;
+      }
+
+      .title {
+        font-size: 1.8em;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .section-title {
+        font-size: 1.3em;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .section-content {
+        margin-top: 10px;
+        padding-left: 20px;
+      }
+      .section-bank {
+        padding-left: 20px;
+      }
+
+      .sign-off {
+        margin-top: 40px;
+        text-align: left;
+        line-height: 1;
+
+      }
+      .CustomPadding {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="CustomPadding">
+      <div class="title">SANCTION LETTER</div>
+
+      <div class="content">
+        <p>Date: <%= data.date %></p>
+        <p>Dear <%= data.name %>,</p>
+
+        <p>
+          Thank you for your loan application made through ramfincorp.com. We are pleased to sanction you a loan as per the enclosed terms and Schedule of Loan Sanction.
+        </p>
+
+        <div class="section-title">Terms:</div>
+        <div class="section-content">
+          <p>
+            Please note that this sanction letter is issued in response to your loan application and based on the information you have provided to us. The processing fees as charged are mentioned in the schedule, and the same will be deducted from your loan amount upfront.
+          </p>
+
+          <p>
+            You are under no obligation to accept the sanctioned loan. If you do not accept the sanction letter and the enclosed agreement, your loan application will be considered withdrawn, and you will not be liable to pay any processing fees/charges.
+          </p>
+
+          <p>
+            If you wish to accept the sanction letter, please go through the enclosed loan agreement and confirm your acceptance of the agreement and the Terms of Sanction letter mentioned above. The loan will be disbursed to your below-mentioned bank account after confirmation and acceptance of this sanction letter.
+          </p>
+        </div>
+
+        <b>The comprehensive terms and conditions of your loan:</b>
+
+        <h4>Your Bank Account Details:</h4>
+        <div class="section-bank">
+          <p>Bank Name: <%= data.bankName %></p>
+          <p>Account No: <%= data.accountNo %></p>
+          <p>Bank IFSC Code: <%= data.ifsc %></p>
+        </div>
+
+        
+        <h4>1. Loan Details:</h4>
+        <ul style="list-style-type:circle;">
+          <li> <p>Amount: Rs. <%= data.loanAmount %></p></li>
+          <li><p>Tenure: <%= data.tenure %> Months</p></li>
+          <li><p>Product: EMI Loan</p></li>
+          <li><p>Rate of Interest: <%= data.roi %> % per annum</p></li>
+        </ul>
+
+        <h4>2. Interest Calculation and Payment:</h4>
+        <ul style="list-style-type:circle;">
+          <li>Interest will be charged from the date of disbursal until the payment date.</li>
+          <li>The calculation is based on the daily outstanding principal amount.</li>
+          <li>You are required to repay the loan amount along with the accrued interest on or before the due date.</li>
+          <li>The repayment can be made via https://www.ramfincorp.com/pay-now/, and the payment should be credited to our account by <%= data.repaymentDate %>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="CustomPadding">
+      <h4>3. Penalty and Late Payment:</h4>
+      <ul style="list-style-type:circle;">
+        <li>Penal charges at the rate of <%= data.penalRoi %> % per annum shall be applied after the date of default from payment on the due date of the instalment. Timely repayment is recommended to avoid any potential inconveniences.</li>
+        <li>A one-time penalty charge is ₹500 + 18% GST is chargeable in case of default from EMI repayment.</li>
+      </ul>
+
+      <h4>4. Prepayment Option:</h4>
+      <ul style="list-style-type:circle;">
+        <li>You have the flexibility to prepay the loan amount before the due date without incurring any prepayment charges.</li>
+      </ul>
+
+      <h4 style="margin-bottom: 5px;">5. Disbursement Process and Documentation:</h4>
+      <ul style="list-style-type:circle; margin-top: 5px;">
+        <li>The approved loan amount will be disbursed directly to your designated bank account upon completion of the necessary documentation and verification procedures.</li>
+        <li>We kindly request accurate and up-to-date personal and financial information to facilitate a smooth and prompt loan processing experience.</li>
+      </ul>
+
+      <h4 style="margin-top: 50px;">6. Disbursement Process and Documentation:</h4>
+      <ul style="list-style-type:circle;">
+        <li>The approved loan amount will be disbursed directly to your designated bank account upon completion of the necessary documentation and verification procedures.</li>
+        <li>We kindly request accurate and up-to-date personal and financial information to facilitate a smooth and prompt loan processing experience.</li>
+      </ul>
+
+      <h4>7. Collateral and Security:</h4>
+      <ul style="list-style-type:circle;">
+        <li>This loan is unsecured, meaning there is no requirement for collateral. However, as a security, a security cheque will be deposited.</li>
+      </ul>
+
+
+      <h4>8. Communication and Updates:</h4>
+      <ul style="list-style-type:circle;">
+        <li>Our primary mode of communication will be via the contact details provided during the application process. You will receive all loan-related correspondence through these channels.</li>
+        <li>RK Bansal will notify you of any changes to the loan terms or conditions.</li>
+      </ul>
+
+      <h4>9. Privacy and Data Security:</h4>
+      <ul style="list-style-type:circle;">
+        <li>The security of your personal and financial information is of utmost importance to us. We adhere to stringent data protection laws to ensure the confidentiality and privacy of your information.</li>
+      </ul>
+
+      <h4>10. Default And Consequences:</h4>
+      <ul style="list-style-type:circle;">
+        <li>In the event of failure to repay the loan by the due date, the loan shall attract interest for the defaulted period also. Additionally, defaulting on the loan may impact your credit rating.</li>
+      </ul>
+
+    </div>
+
+    <div class="CustomPadding">
+      <h4 style="margin-bottom: 5px;">11. Foreclosure and Cooling-Off Period:</h4>
+      <ul style="list-style-type:circle; margin-top: 5px;">
+        <li style="margin-bottom: 60px;"> <b>Foreclosure: </b>  You have the option to foreclose (repay in full) the loan at any time before the scheduled completion date. RK Bansal will provide sufficient features for you to repay your loan easily and without complications. A nominal foreclosure fee of ₹1,500 will be charged along with 18% GST over this amount.</li>
+        <li> <b>Cooling-Off Period: </b>  Interest will begin to accrue from the date of loan disbursal.</li>
+      </ul>
+
+      <h4>12. Customer Support:</h4>
+      <ul style="list-style-type:circle;">
+        <li>Should you have any questions, concerns, or require further clarification, our dedicated customer support team is readily available at +91 98999-85495.</li>
+      </ul>
+
+      <p>We genuinely appreciate your trust in R K Bansal Finance Pvt. Ltd. as your financial partner. Our mission is to ensure your borrowing experience is efficient and transparent, helping you navigate your financial requirements with ease. By accepting this loan, you acknowledge and agree to the terms and conditions outlined in this letter.</p>
+      <p>Thank you for choosing us for your financial needs. We look forward to assisting you and making your financial journey a success.</p>
+
+      <!-- Sign-off -->
+      <div class="sign-off">
+        <p>Warm regards,</p>       
+        <img src="https://bank-logo-ramfin.s3.ap-south-1.amazonaws.com/Stamp.png" alt="Stamp Image" height="40%" width="40%"/>
+        <p>Authorised Signatory</p>
+        <p>Bharat Soni</p>
+        <p>Director</p>
+        <p>R K Bansal Finance Private Limited</p>
+        <p>8/9 Karol Bagh, WEA,</p>
+        <p>2nd Floor, Delhi - 110005</p>        
+        <img src="https://bank-logo-ramfin.s3.ap-south-1.amazonaws.com/Sign_Bharat.png" alt="Stamp Image" height="20%" width="20%"/>
+      </div>
+    </div>
+
+    <br>    
+    <br>
+  </body>
+</html>

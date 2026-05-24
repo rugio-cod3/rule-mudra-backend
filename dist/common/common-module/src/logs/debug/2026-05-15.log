@@ -1,0 +1,54 @@
+2026-05-15 00:24:42 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:24:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:24:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:24:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:40:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:40:54 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:40:54 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:40:54 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:44:58 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:03 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:03 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:03 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:44 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:45:49 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:35 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:40 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:40 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:40 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:45 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:50 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:50 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:49:50 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:50:50 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:50:55 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:50:55 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:50:55 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:53:54 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 00:53:54 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 00:58:37 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:58:41 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:58:41 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:58:41 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 00:59:12 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 00:59:12 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 01:00:27 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 01:00:32 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 01:00:32 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 01:00:32 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 01:00:56 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 01:00:56 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72023 and `status` = 'paid' limit 1
+2026-05-15 12:03:11 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 12:03:17 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 12:03:17 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 12:03:18 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 12:13:53 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72024 and `status` = 'paid' limit 1
+2026-05-15 12:13:53 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72024 and `status` = 'paid' limit 1
+2026-05-15 15:25:48 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 15:25:53 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 15:25:53 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 15:25:53 [32minfo[39m: MySQL connected: primary and replica
+2026-05-15 15:35:54 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72025 and `status` = 'paid' limit 1
+2026-05-15 15:35:54 [32minfo[39m: Primary → select * from `razorpay_mandate` where `customerID` = 72025 and `status` = 'paid' limit 1

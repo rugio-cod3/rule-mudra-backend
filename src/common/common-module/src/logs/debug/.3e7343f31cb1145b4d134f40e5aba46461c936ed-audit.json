@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/root/api_code/rule-mudra-backend/src/common/common-module/src/logs/debug/.3e7343f31cb1145b4d134f40e5aba46461c936ed-audit.json",
+    "files": [
+        {
+            "date": 1779600630389,
+            "name": "/root/api_code/rule-mudra-backend/src/common/common-module/src/logs/debug/2026-05-24.log",
+            "hash": "71727f1bee43117319ded083ac29f20756e547c58809651862829b56fe6ef6e6"
+        }
+    ],
+    "hashType": "sha256"
+}

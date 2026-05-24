@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/types/api.types.ts"],"sourcesContent":["export type THttpMethod = 'get' | 'post' | 'delete';\n"],"names":[],"mappings":"AAAA,WAAoD"}

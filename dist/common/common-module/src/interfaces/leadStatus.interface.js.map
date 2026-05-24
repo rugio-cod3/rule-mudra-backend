@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/leadStatus.interface.ts"],"sourcesContent":["export interface ILeadsAutoStatusModel{\n    id?:number\n    type?:number\n    agent_id?:number\n    lead_ids?:string;\n    created_at?:Date\n}\n\nexport type TSelectLeadsAutoStatus = keyof ILeadsAutoStatusModel;"],"names":[],"mappings":"AAQA,WAAiE"}

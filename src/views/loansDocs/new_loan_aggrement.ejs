@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Agreement</title>
+    <style>
+      body {
+        font-size: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #ffffff">
+    <div style="width: 100%; max-width: 1100px; margin: 0 auto">
+      <h3 style="font-size: 20px; text-align: center">LOAN AGREEMENT</h3>
+      <p>
+        This Loan Agreement ("Agreement") has been executed at Gurgaon, Haryana,
+        on
+        <strong><%= data.effectiveDate || '[DATE TO BE FILLED]' %></strong> hereto, by and between: <%= data?.lenderInfo?.lender_display_name?.toUpperCase() || 'YASHIK FINLEASE PRIVATE LIMITED'%>, a company incorporated under the provisions of the Companies Act, 1956/2013, having CIN No. <%= data?.lenderInfo?.lender_info?.lenderCinNo || 'U65910HR1993PTC032032' %> its registered office at <%= data?.lenderInfo?.lender_info?.lenderAddress || 'SCO 3, Police line road, Ambala city, Haryana-134003, India' %> (hereinafter referred to as the "Lender", which expression shall, unless repugnant to the context or meaning thereof, include its successors and permitted assigns);
+      </p>
+      <p style="text-align: center">AND</p>
+      <p>
+        <strong><%= data.gender === 'Male' ? 'Mr. ' : data.gender === 'Female' ? 'Ms.' : '' %><%= data.name || '[BORROWER NAME]' %></strong>, PAN: <strong><%= data.pan || '[PAN NUMBER]' %></strong>, residing at <strong><%= data.address || '[ADDRESS]' %></strong>, hereinafter referred to as the 'Borrower,' (which expression shall, unless inconsistent with the context or meaning thereof, include his/her/their legal heirs, executors, administrators, successors-in-interest, and permitted assigns), is the second party to this Agreement. The Lender and Borrower shall each be referred to individually as a 'Party' and collectively as the 'Parties' for the purposes of this Agreement.
+      </p>
+
+      <br />
+
+      <p>NOW THIS AGREEMENT WITNESSETH AS FOLLOWS:</p>
+      <p>1. SCOPE</p>
+      <ul>
+        <li>
+          The Lender (<%= data.lenderInfo.lender_display_name || 'Yashik Finlease Private Limited'%>) is a Non-Banking Financial Company (NBFC) registered with the Reserve Bank of India (RBI) and engaged in the business of providing loans to its customers.
+        </li>
+        <li>
+          The Borrower had approached the Lender for a loan not exceeding INR <strong><%= data.appliedAmount ? data.appliedAmount.toLocaleString('en-IN') : '50,000' %></strong> (Rupees <%= data.appliedAmountWords || 'Fifty Thousand only' %>)
+          (hereinafter referred to as the 'Loan' or 'Loan Amount') on the terms,
+          conditions and the purpose as stated / contained in this Agreement. To
+          be read with the sanction letter(s) and the Key Fact Statement/KFS
+          issued by the Lenders, and as more specifically detailed under
+          Annexure I.
+        </li>
+        <li>
+          Borrower understands that every Loan request shall be assessed
+          individually at the Lender's sole discretion and the final
+          disbursement amount shall be based on the Lender's internal policies
+          and eligibility criteria applicable to the Borrower
+        </li>
+        <li>
+          The Borrower acknowledges and agrees that, for the purpose of
+          assessing loan eligibility, the Lenders may require certain Personal
+          Information, including Sensitive Personal Information, as defined
+          under applicable laws, including but not limited to the General Data
+          Protection Regulation (GDPR), the Reserve Bank of India's (RBI)
+          Digital Lending Guidelines, and the Information Technology Act, 2000
+          (India).
+        </li>
+        <li>
+          The Borrower explicitly and irrevocably consents to the Lenders
+          collecting, storing, processing, sharing, obtaining, disclosing, and
+          authenticating such information, including CKYC/KYC details, either
+          directly or through authorized agencies and/or statutory authorities
+          such as UIDAI, in compliance with the aforementioned laws and
+          regulations.
+        </li>
+        <li>
+          Furthermore, the Borrower consents to the use and storage of such
+          information by the Lenders for credit assessment, risk profiling,
+          fraud prevention, regulatory reporting, and any other lawful purpose,
+          as permitted under applicable laws and regulatory guidelines. The
+          Borrower acknowledges that this data may be processed and shared
+          without requiring additional notice, to the extent necessary for
+          compliance and service delivery. The Borrower retains the right to
+          withdraw consent for data processing in accordance with applicable
+          law, subject to the terms and conditions governing the loan agreement.
+        </li>
+        <li>
+          This Agreement shall be valid for any Loan(s) availed by the Borrower
+          within a period of 3 years from the Effective Date, subject to
+          applicable terms.
+        </li>
+        <li>
+          At the request of the Borrower, the Lender may in its sole discretion
+          agree to the Borrower reborrowing any amount(s) under this Agreement
+          for such amounts and for such further periods as the Lender may deem
+          fit in its sole discretion and/or in compliance with applicable laws
+          and including, the Lender's discretion in revising any of the
+          conditions for the Loan including, specifying additional conditions,
+          which shall all be binding on the Borrower. The rate of
+          interest/tenure and change in conditions shall be as intimated by the
+          Lender to the Borrower. Notwithstanding this, upon any such request
+          being made by the Borrower, the Borrower shall have deemed to have
+          warranted and represented to the Lender that no Event of Default has
+          occurred and/or is in existence or continuing.
+        </li>
+        <li>
+          Any increase in the credit limit shall be subject to fresh
+          underwriting, KYC verification, and the explicit consent of the
+          Borrower, in compliance with the RBI's Digital Lending Guidelines
+          (2023) . There will be no automatic credit limit increase without
+          fulfilling these requirements.
+        </li>
+        <li>
+          The Loan shall be subject to the terms and conditions agreed herein
+          between the Lender and the Borrower.
+        </li>
+      </ul>
+
+      <br />
+
+      <p>2. DISBURSAL OF THE LOAN</p>
+      <ul>
+        <li>
+          The Loan will be disbursed to the Borrower in one instalment as may be
+          required by the Borrower. The disbursement shall be through the agreed
+          mode of disbursement in the Application Form.
+        </li>
+        <li>
+          The Borrower acknowledges and authorizes the Lender to disburse the
+          loan to third parties as agreed between them. The Borrower remains
+          liable for the repayment of such disbursed amounts.
+        </li>
+        <li>
+          In case of purchase made by Customer at Co-Lenders tied up merchants,
+          the Customer's request for loan shall be processed as per the standard
+          practice of Co-lenders and pursuant to Valid Confirmation by the
+          Customer, it shall be deemed as disbursed once the Loan amount or part
+          of the Loan amount is transferred from Co-Lenders account to the
+          Merchant Account.
+        </li>
+      </ul>
+
+      <br />
+
+      <p>3. INTEREST AND CHARGES</p>
+      <ul>
+        <li>
+          The Borrower shall pay interest, penal charges along with processing
+          fee, late payment fees, ECS/NACH/cheque bounce charges and roll over
+          fees (collectively referred to as "Charges") at the rate as detailed
+          in Annexure 1 herein, and as per the time frame agreed in the Mobile
+          Application Form.
+        </li>
+        <li>
+          Notwithstanding the above, the Borrower acknowledges and agrees that
+          the rate of interest and/or Charges may be subject to change in
+          accordance with the policies of the Lender or as per applicable laws
+          and regulations. Any revision in interest rates or Charges shall be
+          communicated to the Borrower through the Mobile Application, email, or
+          any other acceptable mode of communication. In the event of an upward
+          revision in interest rates or Charges, the Lender shall have the
+          absolute discretion to revise the instalment amounts applicable for
+          the repayment of the Loan, and the Borrower shall be liable to repay
+          the Loan as per such revised terms. The Lender shall ensure that any
+          change in the rate of interest or Charges is applied only
+          prospectively.
+        </li>
+        <li>
+          The Borrower acknowledges, agrees, and confirms that in the event of
+          re-borrowing any amount under the Loan, a processing fee shall be
+          payable by the Borrower at the rate prescribed by the Lender from time
+          to time.
+        </li>
+        <li>
+          In the event of default in the payment of any Amount Due under the
+          Loan, or if the Borrower breaches any obligation under this Agreement
+          or any other instrument related to the Loan, the Borrower shall be
+          liable to pay default interest and applicable Charges at the rate
+          specified in Annexure 1, compounded monthly, from the date of default
+          until the date of realization by the Lender. The payment of default
+          interest and Charges shall not absolve the Borrower of their other
+          obligations under this Agreement, nor shall it affect the rights and
+          remedies available to the Lender in respect of such breach or default.
+        </li>
+      </ul>
+
+      <br />
+
+      <p>4. REPAYMENT AND PREPAYMENT OF THE LOAN</p>
+      <ul>
+        <li>
+          The Borrower agrees to repay the Loan instalment(s) together with
+          interest, default interest (if any) or the Charges, dues and taxes (as
+          applicable) (Amount Due) on agreed due date/s within the period
+          specified in the Mobile Application Form. Borrower understands that
+          its obligations under this Agreement, shall be valid and binding,
+          until the repayment of the Amount Due, to the satisfaction of Lender.
+        </li>
+        <li>
+          At the request of the Borrower, Lender may accept the prepayment and
+          foreclosure of the Loan as per the terms agreed under the Agreement
+        </li>
+        <li>
+          The Borrower will remain liable under/in respect of the Repayment
+          Instrument(s) (defined below), even if partial payments have been made
+          towards the Loan, from time to time, or the Loan amount has been
+          revised. In case of death or insolvency of the Borrower, the
+          outstanding Loan along with Interest, default interest and the Charges
+          will be recovered from his/her legal heir/s, legal representative/s,
+          executor/s, administrators.
+        </li>
+      </ul>
+
+      <br />
+
+      <p>5. ECS MANDATE / E-MANDATE</p>
+      <ul>
+        <li>
+          The Borrower has given Electronic Clearing System ("ECS")/NACH
+          mandate, E-mandate (collectively "Repayment Instrument") in favour of
+          the Lender for the repayment of the Loan now or hereafter. The
+          Borrower hereby unconditionally and irrevocably authorizes the Lender
+          or any other enforcing agency to enforce the Repayment Instruments
+          towards payment of the Amount Due. The Borrower shall ensure
+          availability of funds in the account on which such Repayment
+          Instrument(s) have been drawn and the Borrower shall not at any time
+          close his/her account and/or issue any notice instructing the Lender
+          not to present any such Repayment Instrument(s) for encashment or
+          instruct his/her bank to stop payment on any such Repayment
+          Instrument(s).
+        </li>
+        <li>
+          The Borrower further confirms that the Loan under this Agreement has
+          been made available on the basis of the Repayment Instrument(s) issued
+          by the Borrower in favour of the Lender. The Repayment Instruments
+          remain valid for all Loan along with interest, default interest and
+          Charges.
+        </li>
+        <li>
+          In case the Borrower does not comply with the aforesaid, the Lender
+          shall still be entitled to present/invoke the Repayment Instrument(s).
+          The dishonour/failure of the Repayment Instrument(s) shall be treated
+          as an Event of Default under this Agreement.
+        </li>
+      </ul>
+
+      <br />
+      <p>6. EVENT OF DEFAULT</p>
+      <p>
+        The Borrower shall be deemed to have committed an act of Default if the
+        Borrower does not comply with his/her obligations as mentioned in this
+        Agreement and also on the happening of one or more of the following
+        events (each an "Event of Default" and collectively "Events of
+        Defaults"):
+      </p>
+      <ul>
+        <li>
+          Default has occurred in the repayment of the Loan along with interest,
+          default interest or the Charges on the due date/s or on demand whether
+          under this Agreement or under any other Agreement with the Company.
+        </li>
+        <li>
+          In the opinion of the Lender, Borrower has breached the
+          representations and warranties and the covenants provided under this
+          Agreement.
+        </li>
+        <li>
+          In the opinion of the Lender, the Borrower have defaulted in the
+          performance of any Covenant, condition or agreement under this
+          Agreement.
+        </li>
+        <li>
+          The Borrower are or becomes a party to any litigation, arbitration,
+          administrative or other action, investigation by any governmental
+          entity, claim, suit or proceedings which would have a material adverse
+          effect on the terms of this Agreement within the jurisdiction of
+          Haryana.
+        </li>
+        <li>
+          The Borrower fails to furnish any information or document that may be
+          required by the Lender from time to time; or
+        </li>
+        <li>
+          If any proceedings are pending or threatened against the Borrower by
+          any Authority for any misconduct or breach/violation of any law or
+          regulations or code of conduct, etc. Upon occurrence of an Event of
+          Default.
+        </li>
+        <li>
+          The outstanding amount of the Loan shall forthwith become payable to
+          the Lender, without any notice to the borrower.
+        </li>
+        <li>
+          Terminate the Loan and declare all obligations immediately due and
+          payable; and/or
+        </li>
+        <li>
+          Stop advancing money or extending credit for the Borrower's benefit
+          under this Agreement or any other agreement Between the Borrower and
+          the Company, and terminate the right of the Borrower to avail of or
+          make drals from the loan; and/or.
+        </li>
+        <li>
+          Take any action and proceed under any applicable law or statute
+          against the Borrower.
+        </li>
+        <li>Enforce the Security, if any available;</li>
+        <li>
+          The Borrower agrees that the payment of entire amount due to Lender
+          under this Agreement can always be enforced against the Borrowers
+          estate and assets and this Agreement shall be binding upon "their
+          heirs, executors, legal representatives and administrators of the
+          Borrowers.
+        </li>
+        <li>
+          The Lenders shall be entitled to take such legal action as it may deem
+          fit, upon the occurrence of any of the Events of Default as set out
+          and agreed by me/us in this Agreement. Further the borrower agrees
+          that the account shall be classified as Non-Performing Asset (NPA) as
+          per the extant RBI Circulars/Regulations when the payment of Loan
+          Instalment (principal and/or interest) remains overdue for more than
+          90 days, that is, the account will be marked as NPA on the 91st day of
+          continuous default from the original due date. To further clarify this
+          following is an illustrative example of the way any account shall be
+          classified as NPA: If due date of a loan account is March 31st, 2021,
+          and full dues (Principal and Interest) are not received before running
+          of the day-end process on 31st March 2021, the date of overdue shall
+          be considered to be March 31st, 2021. If the account continues to
+          remain overdue, then the account shall get tagged as SMA1 upon running
+          day-end process on April 30th, 2021, i.e., upon completion of 30 days
+          of being continuously overdue. Accordingly, the date of SMA-1
+          classification for that account shall be April 30th, 2021. Similarly,
+          if the account continues to remain overdue, it shall get tagged as
+          SMA-2 upon running day-end process on May 30th, 2021, and if it
+          continues to remain overdue further, it shall get classified as NPA
+          upon running day-end process on June 29th, 2021 i.e., upon completion
+          of 90days.
+        </li>
+      </ul>
+
+      <br />
+      <p>7. REMEDIES IN CASE OF DEFAULT</p>
+      <p>
+        The Lender shall have the following remedies without prejudice to its
+        other rights and remedies under this Agreement, in law or inequity:
+      </p>
+      <ul>
+        <li>
+          The Lender shall be entitled to recover the charges for bouncing of
+          the Repayment Instrument(s), default interest and other penal charges
+          from the Borrower as mentioned in Annexure 1.
+        </li>
+        <li>
+          Any other remedy which may be available under law during the pendency
+          of the Loan including without limitation the remedy under section 138
+          of the Negotiable Instruments Act, 1881 and under section 25 (1) of
+          Payment of Settlement System Act, 2007.
+        </li>
+        <li>
+          In addition to the rights specified in this Agreement, the Lender
+          shall be entitled to take all or any action with or without
+          intervention of the Courts to recover the monies due and payable by
+          the Borrower under this Agreement.
+        </li>
+        <li>
+          Notwithstanding any other rights available to the Lender under this
+          Agreement, the Lender shall be entitled to initiate criminal
+          proceeding or any other appropriate actions against the Borrower if at
+          any time the Lender at its sole discretion has sufficient grounds to
+          believe that the Borrower has made any misrepresentations and / or
+          submitted any forged documents or fabricated data to the Lender.
+        </li>
+        <li>
+          All rights and powers conferred on the Lender by this Agreement shall
+          be in addition and supplemental to any rights the Lender has as a
+          creditor against the Borrower under any law for the time being in
+          force and security documents and shall not be in derogation thereof.
+        </li>
+      </ul>
+
+      <br />
+      <p>8. REPRESENTATIONS AND WARRANTIES</p>
+      <ul>
+        <li>
+          Borrower represents and warrants to the Lender as follows: 1 upon
+          execution by the Borrower, this Agreement will constitute a valid,
+          enforceable and legally binding obligation of the Borrower; 1 the
+          Terms and Conditions and the information provided are binding on the
+          Borrower. 1 there is no law, regulation, decree or act and no
+          provision of any existing contract, agreement or instrument to which
+          Borrower is a party that would be contravened by this Agreement or by
+          the performance or observance of any of its terms; (d) 1 all
+          information furnished by or on behalf of the Borrower in connection
+          with obtaining the Loan, whether prior to the date hereof or
+          contemporaneously with the execution of this Agreement and all
+          information furnished hereinafter, is and will be true, correct and
+          complete in all material respects as on the date on which such
+          information is provided or certified. 1 The representations and
+          warranties above shall be deemed to be repeated by the Borrower on and
+          as of each day from the date of this Agreement until all the
+          outstanding Loan, interest, default interest and the Charges due or
+          owing hereunder by the Borrower to the Lender have been repaid in
+          full.
+        </li>
+      </ul>
+
+      <br />
+      <p>9. COVENANTS</p>
+      <p>The Borrower hereby covenants that the Borrower shall:</p>
+      <ul>
+        <li>
+          Ensure timely payment of the Amount Due and ensure that the Repayment
+          Instrument(s) are honoured on presentation.
+        </li>
+        <li>
+          utilize the Loan only for use agreed upon through this agreement and
+          not use the same for any other purpose including making investment in
+          the capital market or for any speculative purposes, unlawful purposes
+          and/or anti-social purpose. The Lender shall have the right to recall
+          the Loan if the funds are used for any speculative, unlawful and/or
+          anti-social purposes;
+        </li>
+        <li>
+          Promptly notify the Lender through a written notice, of any change in
+          the Borrower's mobile number (<strong><%= data.mobile || '[MOBILE NUMBER]' %></strong>), postal address or any other details provided in the Application Form.
+        </li>
+        <li>
+          Execute any and all documents, as the Lender may require, from time to
+          time, for duly or more perfectly securing the repayment of the Loan.
+        </li>
+        <li>
+          Utilize any money received under an insurance claim by the borrower,
+          including legal heirs, for the repayment of the outstanding amount of
+          the Loan.
+        </li>
+        <li>
+          not default or delay in the repayment of outstanding Loan amount along
+          with interest, default interest or the Charges and dues beyond the
+          respective due dates.
+        </li>
+      </ul>
+
+      <br />
+      <p>10. INDEMNIFICATION</p>
+      <p>
+        The Borrower hereby expressly agrees to indemnify, defend and hold the
+        Lender and its directors, officers, employees, agents, attorneys or any
+        other Person affiliated with or representing the Lender harmless
+        against.
+      </p>
+      <ul>
+        <li>
+          all obligations, demands, claims, and liabilities (collectively
+          "Claims") asserted by any other party in connection with the
+          transactions contemplated by the Loan Documents; and
+        </li>
+        <li>
+          all losses or expenses incurred, or paid by the Lender, following or
+          arising from transactions between the Lender and the Borrower
+          (including reasonable attorney's Charges and expenses), except for
+          claims and/or losses directly caused by the Lender's gross negligence
+          or wilful misconduct.
+        </li>
+      </ul>
+
+      <br />
+      <p>11. AUTHORIZATION AND DISCLOSURES</p>
+      <ul>
+        <li>
+          The Borrower authorizes the Lender to engage or appoint one or more
+          person(s) to verify any fact or information furnished by, concerning
+          and pertaining to the Borrower and/or to collect any and all Borrower
+          information or activities relating to the administration of the Loan
+          including the rights and authority to collect and receive on behalf of
+          the Lender all dues and unpaid instalments. And other amounts due by
+          Borrower under this Agreement. The Borrower expressly accepts and
+          authorizes the Lender (and/or any such third party as the Lender may
+          appoint from time to time) to contact third parties (including the
+          family members of the Borrower ) and disclose all necessary or
+          relevant information pertaining to the Borrower and the Loan, and the
+          Borrower hereby consents to such disclosure by the Lender (and/or any
+          such third party as the Lender may appoint )
+        </li>
+        <li>
+          The Borrower also authorizes the Lender or any third party (authorized
+          by the Lender) to collect data from Credit Information Companies
+          ("CICs").
+        </li>
+        <li>
+          The Borrower agrees and authorizes the Lender to disclose, from time
+          to time, any information relating to the Borrower and/or the Loan to;
+          (a) any employee or representative of the Lender or to third parties
+          engaged by the Lender , from time to time, for purposes of this
+          Agreement; (b) the CICs and other agencies authorized by the Reserve
+          Bank of India or any other regulatory authority, which may use,
+          process, disclose and furnish the said information, in any manner as
+          it may deem fit; (c) to any group companies and/or to any of the
+          Lender's service providers, insurers or insurance brokers or
+          professional advisers; and/or credit rating agencies.
+        </li>
+        <li>
+          The Lender shall give notice to the Borrower of any change in the
+          terms and conditions including the disbursement schedule, interest
+          rates, the Charges, repayment terms etc.
+        </li>
+      </ul>
+
+      <br />
+      <p>12. LIMITATION OF LIABILITY</p>
+      <p>
+        Borrower expressly understands and acknowledges that the Lender shall
+        not be liable for any direct, indirect, incidental, Special,
+        consequential or exemplary damages, including but not limited to,
+        damages for loss of profits, goodwill, use, Data or other intangible
+        losses, even if the Lender has been advised of the possibility of such
+        damages.
+      </p>
+
+      <br />
+      <p>13. DISPUTE RESOLUTION AND GOVERNING LAW</p>
+      <p>
+        In the event that any Party fails to comply with the terms and
+        conditions set forth in this Agreement, the other Party shall have the
+        full right to enforce this Agreement in accordance with applicable laws
+        through the competent courts in India. Any dispute or difference arising
+        out of or in connection with this Agreement shall be subject to the
+        exclusive jurisdiction of the courts in Haryana.
+      </p>
+
+      <br />
+      <p>14. MISCELLANEOUS</p>
+      <ul>
+        <li>
+          The Borrower hereby states that the contents of the Loan Documents
+          have been read out and explained to the Borrower in the local
+          language, and the Borrower has understood the contents of the Loan
+          Documents before affixing their signature thereto.
+        </li>
+        <li>
+          Except as otherwise provided herein, all charges and expenses incurred
+          in connection with or related to this Agreement shall be borne by the
+          Borrower. The Borrower shall be liable for the payment of any
+          applicable taxes, stamp duty, penalties, registration charges, or any
+          other levies incurred by the Borrower or the Lender for the
+          performance or enforcement of this Agreement.
+        </li>
+        <li>
+          The Parties hereto confirm and acknowledge that this Agreement, along
+          with the Application Form and Annexure(s), constitutes the entire
+          agreement between them and supersedes all prior communications,
+          whether oral or written, in relation to the subject matter of this
+          Agreement. No variation, amendment, or modification to this Agreement
+          shall be binding on any Party unless expressly provided for within
+          this Agreement or executed in writing by the duly authorized
+          representatives of the Parties
+        </li>
+        <li>
+          If any provision of this Agreement is held to be illegal, invalid, or
+          unenforceable by a court of competent jurisdiction, the remaining
+          provisions shall continue to remain valid and enforceable to the
+          fullest extent permitted by law.
+        </li>
+        <li>
+          The Borrower shall not assign or transfer any of its rights or
+          obligations under this Agreement in any manner whatsoever. However,
+          notwithstanding anything to the contrary contained herein, the Lender
+          shall have the right, at its sole discretion, to assign, transfer, or
+          novate its rights and/or obligations under this Agreement, in whole or
+          in part, including the outstanding loan amount or any risk-sharing
+          arrangement, whether with or without recourse, to one or more banks,
+          financial institutions, trusts, or any other entities, without any
+          prior notice or reference to the Borrower.
+        </li>
+        <li>
+          No amendment, modification, or supplement to this Agreement shall be
+          valid or binding unless executed in writing and duly signed by the
+          authorized representatives of both Parties.
+        </li>
+      </ul>
+
+      <br />
+      <p style="text-align: center"><strong>ANNEXURE 1</strong></p>
+
+      <table
+        border="1"
+        cellspacing="0"
+        cellpadding="8"
+        style="
+          border-collapse: collapse;
+          width: 100%;
+          table-layout: fixed;
+          text-align: left;
+        "
+      >
+        <tr>
+          <td style="width: 33%"><b>BORROWER</b></td>
+          <td style="width: 67%">
+            <%= data.gender === 'Male' ? 'Mr. ' : data.gender === 'Female' ? 'Ms. ' : '' %><%= data.name || '[TO BE FILLED]' %>
+          </td>
+        </tr>
+        <tr>
+          <td><b>PAN</b></td>
+          <td><%= data.pan || '[TO BE FILLED]' %></td>
+        </tr>
+        <tr>
+          <td><b>COMPANY</b></td>
+          <td><%= data.company || '[TO BE FILLED]' %></td>
+        </tr>
+        <tr>
+          <td><b>ADDRESS</b></td>
+          <td><%= data.address || '[TO BE FILLED]' %></td>
+        </tr>
+        <tr>
+          <td><b>APPLIED AMOUNT</b></td>
+          <td>
+            INR <%= data.appliedAmount ? data.appliedAmount.toLocaleString('en-IN') : '[TO BE FILLED]' %>
+          </td>
+        </tr>
+        <tr>
+          <td><b>CURRENT SANCTION</b></td>
+          <td>
+            INR <%= data.sanctionedAmount ?
+            data.sanctionedAmount.toLocaleString('en-IN') : '[TO BE FILLED]' %>
+          </td>
+        </tr>
+        <tr>
+          <td><b>DATE</b></td>
+          <td><%= data.applicationDate || '[TO BE FILLED]' %></td>
+        </tr>
+        <tr>
+          <td><b>REPAYMENT DATE</b></td>
+          <td><%= data.repaymentDate || '[TO BE FILLED]' %></td>
+        </tr>
+        <tr>
+          <td><b>INTEREST RATE</b></td>
+          <td>
+            <%= data.interestRate ? data.interestRate + '% per day' : '[TO BE FILLED]' %>
+          </td>
+        </tr>
+      </table>
+
+      <br />
+      <p><strong>EFFECTIVE DATE:</strong> <%= data.effectiveDate || '[TO BE FILLED]' %></p>
+      <br />
+      <p><strong>Lender Charges:</strong></p>
+      <ul>
+        <li>
+          Interest Rate:
+          <strong><%= data.interestRate ? data.interestRate + '% per day' : 'to be mentioned' %></strong>
+        </li>
+        <li>
+          ECS/NACH mandate reject charge: In the event, the ECS/NACH mandate
+          registration is rejected, Lender will charge rejection charges not
+          exceeding Rs <%= data.nachRejectCharge || '250' %>/- per rejection.
+        </li>
+        <li>
+          Charges for bouncing of the Repayment Instrument(s): In case of
+          default by reason of the Repayment Instrument(s) being dishonoured,
+          Lender shall charge Rs <%= data.bounceCharge || '500' %>/- per month /
+          per default towards its dishonour.
+        </li>
+        <li>
+          3 Days of Cooling off/look-up period during which borrower shall not
+          be charged any penalty on prepayment of loan.
+        </li>
+        <li>
+          Prepayment Charges: In case of prepayment there will be a waiver of
+          <%= data.prepaymentWaiver || '18' %>% interest on the outstanding
+          amount.
+        </li>
+        <li>
+          The amount on NACH Mandate is <%= data.nachMandatePercentage || '100'%>% of take-home salary amount as it covers possible increase in limit in near future, processing fee and Interest levy and other charges levy in event of default.
+        </li>
+        <li>
+          Processing fee: <%= data.processingFeePercentage || '10' %>% of the Loan amount exclusive all taxes.
+        </li>
+        <li>
+          Collection Charges: In case of delay in payment of amount due, Collection Charges: INR <%= data.collectionChargePerDay || '100' %>
+          per day of delay, from the due date until realization.
+        </li>
+        <li>
+          The Lender, may at its sole discretion, waive or reduce the charges as
+          mentioned above, on a case-to-case basis.
+        </li>
+        <li>
+          IN WITNESS WHEREOF the Parties have executed this Agreement on the day
+          and the year as mentioned in the First Schedule. The agreement has been signed digitally using either of the two method- Aadhaar based OTP verification or Registered Number & Email Id based OTP verification.
+        </li>
+      </ul>
+      <br />
+
+      <br />
+      <p>Signed and sealed by <%= data?.lenderInfo?.lender_display_name?.toUpperCase() || 'YASHIK FINLEASE PRIVATE LIMITED' %> through its authorized signatory.</p>
+      <p>Signed and delivered by the within named Borrower: <strong><%= data.gender === 'Male' ? 'Mr. ' : data.gender === 'Female' ? 'Ms. ' : '' %><%= data.name || '[BORROWER NAME]' %></strong></p>
+
+      <br />
+      <p style="text-align: center; font-size: 12px; color: #666">
+        Agreement generated on: <%= new Date().toLocaleDateString('en-IN') %><br />
+        Customer ID: <%= data.customerID || '[CUSTOMER ID]' %> | Lead ID: <%= data.leadID || '[LEAD ID]' %>
+      </p>
+    </div>
+  </body>
+</html>

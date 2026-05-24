@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/repayDateHoliday.interface.ts"],"sourcesContent":["export interface IRepayDateHolidayModel {\n    id?: number\n    repaydate: string\n  }\n  \n  export type TSelectRepayDateHoliday = keyof IRepayDateHolidayModel"],"names":[],"mappings":"AAKE,WAAkE"}

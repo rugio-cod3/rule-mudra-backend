@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header,
+      .footer {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .header img {
+        max-width: 200px;
+        margin-top: 30px;
+      }
+      .title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .container2 {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+      }
+      .container2 .left,
+      .container2 .right {
+        font-size: 14px;
+      }
+      .table-container {
+        width: 100%;
+        margin: 20px 0;
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .signature-section {
+        text-align: right;
+        margin: 20px 0;
+      }
+      .summary {
+        text-align: right;
+        margin: 20px 0;
+      }
+      .amortization-table th,
+      .amortization-table td {
+        text-align: center;
+      }
+      .footer {
+        font-weight: bold;
+      }
+      .bank-details {
+  margin: 15px 0;
+}
+
+.bank-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 10px 0;
+}
+
+.bank-list li {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header" style="text-align: center;">
+        <h1 style="margin-bottom: 10px"><u><%= lender_detail.lender_info.lenderCompanyName %></u></h1>
+        <h4 style="margin: 0px !important">
+          <%= lender_detail.lender_info.lenderAddress %>
+        </h4>
+        <h4 style="margin: 0px !important">
+          GST No. <%= lender_detail.lender_info.lenderGstNo %> &nbsp;&nbsp; CIN No. <%= lender_detail.lender_info.lenderCinNo %>
+        </h4>
+        <p>RBI REGN NO. <%=  lender_detail.lender_info.lenderRbiRegnNo %> - RBI APPROVED NBFC</p>
+        <p class="sub-heading">RAM FINCORP - TECH PLATFORM</p>
+        <img
+          src="https://bank-logo-ramfin.s3.ap-south-1.amazonaws.com/logo.png"
+          style="margin-top: 30px; display: block; margin: 0 auto;"
+          alt="Bank Logo"
+        />
+      </div>
+
+      <div class="title">Key Facts Statement</div>
+
+      <div class="container2">
+        <div class="left">
+          <strong>Date:</strong> <%= new Date().toISOString().split('T')[0] %>
+        </div>
+        <div class="right">
+          <strong>Applicant Name:</strong> <%= customer_detail.name %>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <tr>
+            <th>S.No</th>
+            <th>Parameters</th>
+            <th>Details (given for Illustrative computation purposes only)</th>
+          </tr>
+          <tr>
+            <td>i</td>
+            <td>Loan amount</td>
+            <td>₹<%= api_response.amount %></td>
+          </tr>
+          <tr>
+            <td>ii</td>
+            <td>Total interest charge during the entire tenor of the loan</td>
+            <td>₹<%= api_response.interest %></td>
+          </tr>
+          <tr>
+            <td>iii</td>
+            <td>
+              Other up-front Charges, if any.(Break-up of each component given
+              below)
+            </td>
+            <td>
+              ₹<%= (Math.round(api_response.processingFee * 0.18 * 100) / 100) +
+              api_response.processingFee %>
+            </td>
+          </tr>
+          <tr>
+            <td>a</td>
+            <td>Processing fees</td>
+            <td>₹<%= api_response.processingFee %></td>
+          </tr>
+
+          <tr>
+            <td>b</td>
+            <td>Other Charges (GST)</td>
+            <td>
+              ₹<%= Math.round(api_response.processingFee * 0.18 * 100) / 100 %>
+            </td>
+          </tr>
+          <tr>
+            <td>iv</td>
+            <td>Net disbursed amount ((i)-(iii))</td>
+            <td>₹<%= api_response.netDisbursedAmount %></td>
+          </tr>
+          <tr>
+            <td>v</td>
+            <td>Broken-Period Interest (BPI)</td>
+            <td>
+              ₹<%= api_response.brokenPeriodInterest > 0 ?
+              api_response.brokenPeriodInterest : 0 %>
+            </td>
+          </tr>
+          <tr>
+            <td>vi</td>
+            <td>Total amount to be paid by the borrower</td>
+            <td>₹<%= api_response.repaymentAmount %></td>
+          </tr>
+          <tr>
+            <td>vii</td>
+            <td>
+              Annual percentage rate(Annual) – Effective annualised interest
+              rate( in percentage)
+            </td>
+            <td><%= apr %></td>
+          </tr>
+          <tr>
+            <td>viii</td>
+            <td>Tenor of the Loan (In Months)</td>
+            <td><%= api_response.tenure %></td>
+          </tr>
+          <tr>
+            <td>ix</td>
+            <td>Repayment frequency by the borrower</td>
+            <td>Monthly</td>
+          </tr>
+
+          <tr>
+            <td>x</td>
+            <td>Number of installment of repayment</td>
+            <td><%= api_response.totalEMIs %></td>
+          </tr>
+          <tr>
+            <td>xi</td>
+            <td>Amount of each installment of repayment</td>
+            <td>₹<%= api_response.totalEMI %></td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <strong>Details about Contingent Charges</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>xii</td>
+            <td>
+              Rate of annualised penal interest in case of delayed payments
+            </td>
+            <td><%= delayedCharge %> %</td>
+          </tr>
+          <tr>
+            <td>xiii</td>
+            <td>Rate of annualised other penal charges</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>xiv</td>
+            <td>Bounce charges per EMI</td>
+            <td>₹590</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>Other Disclosures</strong></td>
+          </tr>
+          <tr>
+            <td>xv</td>
+            <td>
+              Cooling off/lock-in period during which borrower shall not be
+              charged any penalty on prepayment of loan
+            </td>
+            <td>3 Days</td>
+          </tr>
+          <tr>
+            <td>xvi</td>
+            <td>
+              Details of LSP acting as recovery agent and authorised to approach
+              the borrower
+            </td>
+            <td><%= lender_detail.lender_info.lenderCompanyName %></td>
+          </tr>
+          <tr>
+            <td>xvii</td>
+            <td>
+              Name, designation, address and phone number of official grievance
+              redressal officer designated specifically to deal with Fin-Tech
+              (digital lending) related complaints/issues
+            </td>
+            <td>
+              Amit (Collection Head) <br />
+              New Delhi <br />
+              +91 99101 79872
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="signature-section">
+        <p>Authorised Signatory</p>
+        <p><%= lender_detail.lender_info.lenderAuthorityName %></p>
+        <p>Director</p>
+        <p><%= lender_detail.lender_info.lenderCompanyName %></p>
+        <p><%= lender_detail.lender_info.lenderAddress %></p>
+        <img
+          src=<%= lender_detail.lender_info.lenderSign %>
+          style="width: 75px; float: right"
+        />
+        <div style="clear: both;"></div>
+      </div>
+
+      <div class="title">Loan Amortisation Schedule</div>
+
+      <div class="loan-info">
+        <p><strong>Borrower:</strong> <%= customer_detail.name %></p>
+        <p><%= address?.address %></p>
+        <p><%= customer_detail.mobile %></p>
+      </div>
+      <div class="bank-details">
+        <p class="section-title"><strong>Your Bank Account Details:</strong></p>
+        <% if (loan_detail) { %>
+          <ul class="bank-list">
+            <li>Bank Name: <%= loan_detail.bank %></li>
+            <li>Account No: <%= loan_detail.accountNo %></li>
+            <li>Bank IFSC Code: <%= loan_detail.bankIfsc %></li>
+          </ul>
+        <% } %>
+      </div>
+      <div class="summary">
+        <p><strong>Lender:</strong><%= lender_detail.lender_info.lenderCompanyName %></p>
+        <p><%= lender_detail.lender_info.lenderAddress %></p>
+        <p>+91 99101 79872</p>
+      </div>
+    </div>
+      <div class="table-container">
+        <table>
+          <tr>
+            <th>Loan Information</th>
+            <th>Summary</th>
+          </tr>
+          <tr>
+            <td>
+              <p>Loan Amount: ₹ <%= api_response.amount %></p>
+              <p>Interest Rate (ROI): <%= api_response.roi %> %</p>
+              <p>Term of Loan: <%= api_response.tenure %> Months</p>
+              <p>Loan Issue Date: <%= approval_detail.createdDate %></p>
+              <p>
+                First Payment Date: <%= new
+                Date(api_response.firstDueDate).toISOString().split('T')[0] %>
+              </p>
+              <p>Payment Frequency: Monthly</p>
+              <p>Days in Year: 365</p>
+            </td>
+            <td>
+              <p>
+                Monthly Interest Rate: <%= (api_response.roi / 12).toFixed(2) %>
+                %
+              </p>
+              <p>Number of Payments: <%= api_response.totalEMIs %></p>
+              <p>Total Payment: ₹ <%= api_response.repaymentAmount %></p>
+              <p>Total Interest: ₹ <%= api_response.interest %></p>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <table class="amortization-table">
+          <tr>
+            <th>Payment No.</th>
+            <th>Payment Date</th>
+            <th>EMI</th>
+            <th>Interest</th>
+            <th>Principal</th>
+            <th>Remaining Balance</th>
+          </tr>
+          <% api_response.emiBreakdown.forEach(payment => { %>
+          <tr>
+            <td><%= payment.month %></td>
+            <td>
+              <%= payment.dueDate
+                ? new Date(payment.dueDate).toLocaleDateString('en-GB')
+                : 'No Due Date' %>
+            </td>
+
+            <td><%= payment.emi %></td>
+            <td><%= payment.interest %></td>
+            <td><%= payment.principal %></td>
+            <td><%= payment.remainingPrincipal %></td>
+          </tr>
+          <% }); %>
+        </table>
+      </div>
+
+      <div class="footer">
+        <p>Thank you for choosing <%= lender_detail.lender_info.lenderName %></p>
+      </div>
+    </div>
+  </body>
+</html>

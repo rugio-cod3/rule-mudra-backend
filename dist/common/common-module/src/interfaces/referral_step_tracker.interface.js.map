@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/common/common-module/src/interfaces/referral_step_tracker.interface.ts"],"sourcesContent":["export interface IReferrarStepTrackerModel {}\n\nexport type TSelectReferrarStepTracker = keyof IReferrarStepTrackerModel\n"],"names":[],"mappings":"AAEA,WAAwE"}

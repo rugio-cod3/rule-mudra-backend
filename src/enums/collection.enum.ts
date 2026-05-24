@@ -1,0 +1,39 @@
+export enum CollectionStatus {
+  APPROVED = 'Approved',
+  APPROVED_REFUNDED = 'Approved-refunded',
+  PAYMENT_REJECTED = 'Payment Rejected',
+  APPROVAL_WAITING = 'Approval Waiting',
+  REJECTED = 'Rejected',
+  ACCEPTED = 'Accepted',
+  APPROVED_REJECTED = 'Approved-Rejected',
+}
+export enum CollectedMode {
+  ACCOUNT = 'Account',
+  UPI = 'UPI',
+  CASH = 'Cash',
+  PAYTM = 'PayTM',
+  E_MANDATE = 'E-Mandate',
+  PAYMENT_GATEWAY = 'Payment Getway',
+  HYPTO_BANK_VIRTUAL_AC = 'HYPTO Bank- Virtual A/c',
+  RAZORPAY_BANK = 'Razorpay Bank',
+  RAZORPAY_PAYMENT_GATEWAY = 'RAZORPAY PAYMENT GATEWAY',
+  GOOGLE_PAY = 'GOOGLE PAY',
+  CASHFREE_PAYMENT_GATEWAY = 'CASHFREE PAYMENT GATEWAY',
+  ICICI_BANK_1435 = 'ICICI BANK-1435',
+  ICICI_BANK_7788 = 'ICICI BANK-7788',
+  CUB = 'CUB',
+  IDBI_BANK_4213 = 'IDBI Bank-4213',
+  SOUTH_INDIAN_4754 = 'SOUTH INDIAN-4754',
+  CSB_BANK_5000 = 'CSB BANK-5000',
+  INDUSIND_BANK_9999 = 'INDUSIND BANK-9999',
+  BHARAT_SONI_PAYTM = 'BHARAT SONI PAYTM',
+  DISCOUNT = 'DISCOUNT',
+  WAIVE_OFF = 'Waive Off',
+}
+
+export enum CollectionStatus {
+  CLOSED = 'Closed',
+  PART_PAYMENT = 'Part Payment',
+  SETTLEMENT = 'Settlement',
+  EMI_CLOSED = 'EMI Closed',
+}
