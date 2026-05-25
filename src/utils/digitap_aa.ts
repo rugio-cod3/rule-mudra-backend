@@ -1,6 +1,13 @@
 import { customerService } from "@/services/customer.service";
 import { leadService } from "@/services/lead.service";
 // import { DigitapAccountAggregatorService } from "@/services/thirdParty/digitapAccountAggregator.service";
+import config from "@/config/default";
+import { ApprovalStatus } from "@/enums/approvalStatus.enum";
+import { BranchName } from "@/enums/common.enum";
+import { LeadStatus } from "@/enums/lead.enum";
+import { IApproval } from "@/interfaces/approval.interface";
+import { approvalService } from "@/services/approval.service";
+import { finboxService } from "@/services/thirdParty/finbox.service";
 import redisClient from "@/services/thirdParty/ioredis";
 import { fetchCredForgeBankBre } from "@/utils/finbud";
 import { cwd } from "process";
@@ -170,6 +177,32 @@ export async function digitapAABankConnect(payload: {
     };
   }
 
+  const finalBankBre =
+    credforgeResponse?.output_data?.rules_output?.final_decision;
+
+  if (!finalBankBre) {
+    return {
+      status: false,
+      message: "Unable to get Bank BRE decision",
+      data: {
+        retry: true,
+      },
+    };
+  }
+
+  const decision = finalBankBre.Decision;
+  const offerAmount = Number(finalBankBre.LoanAmount || 0);
+
+  await createOrUpdateApprovalAfterBankBre({
+    customerID,
+    leadID,
+    decision,
+    offerAmount,
+    customerData,
+    getLeadsInfo: leadData,
+    message: "Digitap Bank BRE completed",
+  });
+
   return {
     status: true,
     message: "Bank BRE completed",
@@ -181,6 +214,145 @@ export async function digitapAABankConnect(payload: {
         credforgeResponse.output_data.rules_output.final_decision.LoanAmount,
       //   rawBankData: reportResponse.data,
       //   bankBreResponse: credforgeResponse,
+    },
+  };
+}
+
+async function createOrUpdateApprovalAfterBankBre(payload: {
+  customerID: number;
+  leadID: number;
+  decision: string;
+  offerAmount: number;
+  customerData: any;
+  getLeadsInfo: any;
+  message: string;
+}) {
+  const { customerID, leadID, decision, customerData, getLeadsInfo, message } =
+    payload;
+
+  let offerAmount = Number(payload.offerAmount || 0);
+
+  if (offerAmount < config.min_loan_amount) {
+    offerAmount = Number(config.min_loan_amount);
+  }
+
+  const maxLoanAmount = Number(config.max_loan_amount || 18000);
+  const requestedAmount = Number(getLeadsInfo?.loanRequeried || 0);
+
+  const loanAmtApproved =
+    offerAmount > requestedAmount ? requestedAmount : offerAmount;
+
+  let finalLoanAmount =
+    loanAmtApproved > maxLoanAmount ? maxLoanAmount : loanAmtApproved;
+
+  if (decision === "Approve") {
+    const approvedLoan = await approvalService.findOne({
+      customerID,
+      leadID,
+    });
+
+    const salaryDate = customerData.salary_date ?? "5";
+    const checkEmptyDate = 0;
+
+    const repayDateData = await finboxService.repayDateFind(String(salaryDate));
+
+    const formattedDate = repayDateData.formattedDate;
+    const difference = repayDateData.difference;
+
+    let finalOfferAmount = 0;
+
+    if (finalLoanAmount) {
+      const modOfferAmount = finalLoanAmount % 1000;
+
+      if (modOfferAmount < 500) {
+        finalOfferAmount = finalLoanAmount - modOfferAmount;
+      } else {
+        finalOfferAmount = finalLoanAmount + 1000 - modOfferAmount;
+      }
+    }
+
+    const adminfee = (finalOfferAmount * 10) / 100;
+    const gstOfAdminFee = (adminfee * 18) / 100;
+
+    if (!approvedLoan) {
+      const data: IApproval = {
+        customerID,
+        leadID,
+        branch: BranchName.NOIDA,
+        loanAmtApproved: finalOfferAmount,
+        tenure: checkEmptyDate === 0 ? difference : 0,
+        roi: +config.rate_of_interest,
+        repayDate: checkEmptyDate === 0 ? formattedDate : "0000-00-00",
+        adminFee: adminfee,
+        GstOfAdminFee: gstOfAdminFee,
+        alternateMobile: String(customerData.mobile),
+        officialEmail: customerData.email,
+        cibil: 0,
+        activeLoans: 0,
+        status: ApprovalStatus.ApprovedProcess,
+        remark: "",
+        creditedBy: 1,
+        employmentType: customerData.employeeType,
+      };
+
+      await approvalService.create(data);
+
+      await leadService.updateOne(
+        { customerID, leadID },
+        { status: LeadStatus.APPROVED_PROCESS },
+      );
+    } else if (Number(approvedLoan.loanAmtApproved || 0) < finalOfferAmount) {
+      await approvalService.updateOne(
+        {
+          approvalID: approvedLoan.approvalID,
+          customerID,
+          leadID,
+        },
+        {
+          loanAmtApproved: finalOfferAmount,
+          tenure: checkEmptyDate === 0 ? difference : 0,
+          repayDate: checkEmptyDate === 0 ? formattedDate : "0000-00-00",
+          adminFee: adminfee,
+          GstOfAdminFee: gstOfAdminFee,
+        },
+      );
+
+      await leadService.updateOne(
+        { customerID, leadID },
+        { status: LeadStatus.APPROVED_PROCESS },
+      );
+    }
+
+    return {
+      status: true,
+      message,
+      data: {
+        leadID,
+        status: true,
+        decision,
+        offerAmount: finalOfferAmount,
+      },
+    };
+  }
+
+  await leadService.updateOne(
+    {
+      customerID,
+      leadID,
+    },
+    {
+      status: LeadStatus.REJECTED,
+    },
+  );
+
+  return {
+    status: false,
+    message,
+    data: {
+      loanID: leadID,
+      status: false,
+      decision,
+      offerAmount: null,
     },
   };
 }
