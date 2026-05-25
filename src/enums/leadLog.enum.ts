@@ -37,4 +37,15 @@ export enum LeadLogApiType {
   DIGITAP_ESIGN = "digitap_esign",
   DIGITAP_INITIATE_DIGILOCKER = "digitap_initiate_digilocker",
   DIGITAP_GET_DIGILOCKER_DETAILS = "digitap_get_details",
+
+  CRIF_SOFTPULL_INITIATE = "crif_softpull_initiate",
+  CRIF_SOFTPULL_AUTHORIZED = "crif_softpull_authorized",
+  CRIF_SOFTPULL_REPORT = "crif_softpull_report",
+
+  BUREAU_BRE = "bureau_bre",
+  BANK_BRE = "bank_bre",
+
+  DIGITAP_AA_GENERATE_URL = "digitap_aa_generate_url",
+  DIGITAP_AA_STATUS_CHECK = "digitap_aa_status_check",
+  DIGITAP_AA_REPORT = "digitap_aa_report",
 }

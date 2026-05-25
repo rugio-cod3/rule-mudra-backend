@@ -1,4 +1,9 @@
+import { ApiSupplierType } from "@/enums/common.enum";
+import { LeadLogApiType } from "@/enums/leadLog.enum";
+import { ILeadsApiLog } from "@/interfaces/lead_api_log.interface";
+import LeadApiLogService from "@/services/lead_api_log.service";
 import axios, { AxiosError, AxiosInstance } from "axios";
+const leadApiLogService = new LeadApiLogService();
 
 interface DigitapAAConfig {
   baseURL?: string;
@@ -78,6 +83,27 @@ export class DigitapAccountAggregatorService {
         };
       }
 
+      const endpoint = "/generateurl";
+      const fullURL = new URL(
+        endpoint,
+        this.client.defaults.baseURL,
+      ).toString();
+      console.log("FULL URL ===>", fullURL);
+
+      const saveDigitapGenerateURLData: ILeadsApiLog = {
+        customerID: payload.customerID,
+        leadID: payload.leadID.toString(),
+        api_type: LeadLogApiType.DIGITAP_AA_GENERATE_URL,
+        api_supplier: ApiSupplierType.DIGITAP,
+        api_endpoint_url: fullURL,
+        api_method: "POST",
+        status: 1,
+        api_headers: JSON.stringify(this.getHeaders()),
+        api_request: JSON.stringify(payload),
+        api_response: JSON.stringify(response.data),
+      };
+      await leadApiLogService.create(saveDigitapGenerateURLData);
+
       return {
         status: true,
         message: "Digitap AA URL generated",
@@ -97,7 +123,10 @@ export class DigitapAccountAggregatorService {
     }
   }
 
-  public async statusCheck(requestId: string): Promise<DigitapServiceResponse> {
+  public async statusCheck(
+    requestId: string,
+    payload: any,
+  ): Promise<DigitapServiceResponse> {
     try {
       const response = await this.client.post(
         "/statuscheck",
@@ -134,6 +163,27 @@ export class DigitapAccountAggregatorService {
         };
       }
 
+      const endpoint = "/statuscheck";
+      const fullURL = new URL(
+        endpoint,
+        this.client.defaults.baseURL,
+      ).toString();
+      console.log("FULL URL ===>", fullURL);
+
+      const saveDigitapStatusCheckData: ILeadsApiLog = {
+        customerID: payload.customerID,
+        leadID: payload.leadID.toString(),
+        api_type: LeadLogApiType.DIGITAP_AA_STATUS_CHECK,
+        api_supplier: ApiSupplierType.DIGITAP,
+        api_endpoint_url: fullURL,
+        api_method: "POST",
+        status: 1,
+        api_headers: JSON.stringify(this.getHeaders()),
+        api_request: JSON.stringify(payload),
+        api_response: JSON.stringify(response.data),
+      };
+      await leadApiLogService.create(saveDigitapStatusCheckData);
+
       return {
         status: true,
         message: "Digitap report generated",
@@ -152,7 +202,10 @@ export class DigitapAccountAggregatorService {
     }
   }
 
-  public async retrieveReport(txnId: string): Promise<DigitapServiceResponse> {
+  public async retrieveReport(
+    txnId: string,
+    payload: any,
+  ): Promise<DigitapServiceResponse> {
     try {
       const response = await this.client.post(
         "/retrievereport",
@@ -175,6 +228,27 @@ export class DigitapAccountAggregatorService {
           data: response.data,
         };
       }
+
+      const endpoint = "/retrievereport";
+      const fullURL = new URL(
+        endpoint,
+        this.client.defaults.baseURL,
+      ).toString();
+      console.log("FULL URL ===>", fullURL);
+
+      const saveDigitapStatusCheckData: ILeadsApiLog = {
+        customerID: payload.customerID,
+        leadID: payload.leadID.toString(),
+        api_type: LeadLogApiType.DIGITAP_AA_REPORT,
+        api_supplier: ApiSupplierType.DIGITAP,
+        api_endpoint_url: fullURL,
+        api_method: "POST",
+        status: 1,
+        api_headers: JSON.stringify(this.getHeaders()),
+        api_request: JSON.stringify(payload),
+        api_response: JSON.stringify(response.data),
+      };
+      await leadApiLogService.create(saveDigitapStatusCheckData);
 
       return {
         status: true,

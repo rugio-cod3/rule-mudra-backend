@@ -11,6 +11,7 @@ export enum ApiSupplierType {
   CREDFORGE = 6,
   FINBOX = 7,
   DIGITAP = 8,
+  CRIF = 2,
 }
 
 export enum SurePassApiUrl {

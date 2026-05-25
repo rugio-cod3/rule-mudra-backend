@@ -96,7 +96,10 @@ export async function digitapAABankConnect(payload: {
   });
 
   if (!finalTxnId) {
-    const statusResponse = await digitapService.statusCheck(requestId);
+    const statusResponse = await digitapService.statusCheck(requestId, {
+      customerID,
+      leadID,
+    });
 
     if (!statusResponse.status) {
       return {
@@ -113,7 +116,10 @@ export async function digitapAABankConnect(payload: {
     finalTxnId = statusResponse.data?.txn_id;
   }
 
-  const statusResponse = await digitapService.statusCheck(requestId);
+  const statusResponse = await digitapService.statusCheck(requestId, {
+    customerID,
+    leadID,
+  });
 
   if (!statusResponse.status) {
     return {
@@ -129,7 +135,10 @@ export async function digitapAABankConnect(payload: {
 
   const txnId = statusResponse.data?.txn_id;
 
-  const reportResponse = await digitapService.retrieveReport(txnId);
+  const reportResponse = await digitapService.retrieveReport(txnId, {
+    customerID,
+    leadID,
+  });
 
   if (!reportResponse.status) {
     return {

@@ -5861,6 +5861,8 @@ export class OnboardingService extends ResponseService {
       state: getCustomerAddress.state || "",
       pincode: String(getCustomerAddress.pincode || ""),
       country: "india",
+      customerID,
+      leadID: loanID,
     });
     console.log("crifResponse=============>", crifResponse);
     if (!crifResponse?.success) {

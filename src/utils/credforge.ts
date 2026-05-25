@@ -1,4 +1,10 @@
+import { ApiSupplierType } from "@/enums/common.enum";
+import { LeadLogApiType } from "@/enums/leadLog.enum";
+import { ILeadsApiLog } from "@/interfaces/lead_api_log.interface";
+import LeadApiLogService from "@/services/lead_api_log.service";
 import axios, { AxiosError, AxiosInstance } from "axios";
+
+const leadApiLogService = new LeadApiLogService();
 
 /**
  * =========================================================
@@ -154,6 +160,27 @@ export class CredForgeBreService {
         };
       }
 
+      const endpoint = `/execute/${this.clientID}/bureau_mobile_bre`;
+      const fullURL = new URL(
+        endpoint,
+        this.client.defaults.baseURL,
+      ).toString();
+      console.log("FULL URL ===>", fullURL);
+
+      const saveCrifAuthorizedData: ILeadsApiLog = {
+        customerID: Number(payload.userId),
+        leadID: payload.leadId,
+        api_type: LeadLogApiType.BUREAU_BRE,
+        api_supplier: ApiSupplierType.CREDFORGE,
+        api_endpoint_url: fullURL,
+        api_method: "POST",
+        status: 1,
+        api_headers: JSON.stringify(this.getHeaders()),
+        api_request: JSON.stringify(payload),
+        api_response: JSON.stringify(response.data),
+      };
+      await leadApiLogService.create(saveCrifAuthorizedData);
+
       return {
         success: true,
         requestPayload,
@@ -197,6 +224,27 @@ export class CredForgeBreService {
           data: response.data,
         };
       }
+
+      const endpoint = `/execute/${this.clientID}/bank_bre`;
+      const fullURL = new URL(
+        endpoint,
+        this.client.defaults.baseURL,
+      ).toString();
+      console.log("FULL URL ===>", fullURL);
+
+      const saveCrifAuthorizedData: ILeadsApiLog = {
+        customerID: Number(payload.userId),
+        leadID: payload.leadId,
+        api_type: LeadLogApiType.BANK_BRE,
+        api_supplier: ApiSupplierType.CREDFORGE,
+        api_endpoint_url: fullURL,
+        api_method: "POST",
+        status: 1,
+        api_headers: JSON.stringify(this.getHeaders()),
+        api_request: JSON.stringify(payload),
+        api_response: JSON.stringify(response.data),
+      };
+      await leadApiLogService.create(saveCrifAuthorizedData);
 
       return {
         success: true,

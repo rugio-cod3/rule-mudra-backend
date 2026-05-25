@@ -1,9 +1,14 @@
 // crifSoftPull.service.ts
 
+import { ApiSupplierType } from "@/enums/common.enum";
+import { LeadLogApiType } from "@/enums/leadLog.enum";
+import { ILeadsApiLog } from "@/interfaces/lead_api_log.interface";
+import LeadApiLogService from "@/services/lead_api_log.service";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
 import { XMLParser } from "fast-xml-parser";
 
+const leadApiLogService = new LeadApiLogService();
 /**
  * =========================================================
  * CONFIG
@@ -40,6 +45,8 @@ export interface CustomerData {
   state: string;
   pincode: string;
   country?: string;
+  customerID: number;
+  leadID: number;
 }
 
 /**
@@ -129,7 +136,10 @@ export class CrifSoftPullService {
       /**
        * STAGE 2
        */
-      const authorizationResponse = await this.authorize(initiateResponse);
+      const authorizationResponse = await this.authorize(
+        initiateResponse,
+        customerData,
+      );
       console.log(
         "================>authorizationResponse",
         authorizationResponse,
@@ -146,7 +156,10 @@ export class CrifSoftPullService {
       /**
        * STAGE 3
        */
-      const bureauResponse = await this.fetchReport(initiateResponse);
+      const bureauResponse = await this.fetchReport(
+        initiateResponse,
+        customerData,
+      );
       console.log("bureauResponse=============>", bureauResponse);
       return {
         success: true,
@@ -226,26 +239,43 @@ export class CrifSoftPullService {
     console.log("CRIF ORDER ID:", orderId);
     console.log("CRIF ACCESS CODE:", accessCode);
     console.log("CRIF PAYLOAD:", payload);
-
-    const response = await axios.post(
-      "https://test.crifhighmark.com/Inquiry/do.getSecureService/DTC/initiate",
-      payload,
-      {
-        headers: {
-          orderId: orderId,
-          accessCode: accessCode,
-          appID: this.appID,
-          merchantID: this.merchantID,
-          "Content-Type": "text/plain",
-        },
-        transformRequest: [(data) => data],
-        timeout: 60000,
-        validateStatus: () => true,
+    const api_url =
+      "https://test.crifhighmark.com/Inquiry/do.getSecureService/DTC/initiate";
+    const response = await axios.post(api_url, payload, {
+      headers: {
+        orderId: orderId,
+        accessCode: accessCode,
+        appID: this.appID,
+        merchantID: this.merchantID,
+        "Content-Type": "text/plain",
       },
-    );
+      transformRequest: [(data) => data],
+      timeout: 60000,
+      validateStatus: () => true,
+    });
 
     console.log("CRIF STATUS:", response.status);
     console.log("CRIF DATA:", response.data);
+
+    const saveCrifInitiateData: ILeadsApiLog = {
+      customerID: customerData.customerID,
+      leadID: customerData.leadID.toString(),
+      api_type: LeadLogApiType.CRIF_SOFTPULL_INITIATE,
+      api_supplier: ApiSupplierType.CRIF,
+      api_endpoint_url: api_url,
+      api_method: "POST",
+      status: 1,
+      api_headers: JSON.stringify({
+        orderId: orderId,
+        accessCode: accessCode,
+        appID: this.appID,
+        merchantID: this.merchantID,
+        "Content-Type": "text/plain",
+      }),
+      api_request: JSON.stringify(payload),
+      api_response: JSON.stringify(response.data),
+    };
+    await leadApiLogService.create(saveCrifInitiateData);
 
     return response.data;
   }
@@ -256,7 +286,10 @@ export class CrifSoftPullService {
    * =========================================================
    */
 
-  private async authorize(data: InitiateResponse): Promise<any> {
+  private async authorize(
+    data: InitiateResponse,
+    customerData: CustomerData,
+  ): Promise<any> {
     const payload = this.buildStage23Payload(data);
 
     const response = await this.client.post("/DTC/response", payload, {
@@ -269,6 +302,32 @@ export class CrifSoftPullService {
       }),
     });
 
+    const endpoint = "/DTC/response";
+    const fullURL = new URL(endpoint, this.client.defaults.baseURL).toString();
+    console.log("FULL URL ===>", fullURL);
+
+    const saveCrifAuthorizedData: ILeadsApiLog = {
+      customerID: customerData.customerID,
+      leadID: customerData.leadID.toString(),
+      api_type: LeadLogApiType.CRIF_SOFTPULL_AUTHORIZED,
+      api_supplier: ApiSupplierType.CRIF,
+      api_endpoint_url: fullURL,
+      api_method: "POST",
+      status: 1,
+      api_headers: JSON.stringify(
+        this.getHeaders({
+          orderId: data.orderId,
+          reportId: data.reportId,
+          requestType: "Authorization",
+          Accept: "application/xml",
+          "Content-Type": "application/xml",
+        }),
+      ),
+      api_request: JSON.stringify(payload),
+      api_response: JSON.stringify(response.data),
+    };
+    await leadApiLogService.create(saveCrifAuthorizedData);
+
     return this.parseResponse(response.data);
   }
 
@@ -278,7 +337,10 @@ export class CrifSoftPullService {
    * =========================================================
    */
 
-  private async fetchReport(data: InitiateResponse): Promise<any> {
+  private async fetchReport(
+    data: InitiateResponse,
+    customerData: CustomerData,
+  ): Promise<any> {
     const payload = this.buildStage23Payload(data);
     const response = await this.client.post("/DTC/response", payload, {
       headers: this.getHeaders({
@@ -288,6 +350,31 @@ export class CrifSoftPullService {
         "Content-Type": "application/xml",
       }),
     });
+
+    const endpoint = "/DTC/response";
+    const fullURL = new URL(endpoint, this.client.defaults.baseURL).toString();
+    console.log("FULL URL ===>", fullURL);
+
+    const saveCrifReportData: ILeadsApiLog = {
+      customerID: customerData.customerID,
+      leadID: customerData.leadID.toString(),
+      api_type: LeadLogApiType.CRIF_SOFTPULL_REPORT,
+      api_supplier: ApiSupplierType.CRIF,
+      api_endpoint_url: fullURL,
+      api_method: "POST",
+      status: 1,
+      api_headers: JSON.stringify(
+        this.getHeaders({
+          orderId: data.orderId,
+          reportId: data.reportId,
+          Accept: "application/xml",
+          "Content-Type": "application/xml",
+        }),
+      ),
+      api_request: JSON.stringify(payload),
+      api_response: JSON.stringify(response.data),
+    };
+    await leadApiLogService.create(saveCrifReportData);
 
     return this.parseResponse(response.data);
   }

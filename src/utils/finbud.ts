@@ -165,14 +165,13 @@ export async function fetchCredForgeBankBre(payload: any): Promise<any> {
   const headers = {
     "Content-Type": "application/json",
   };
-  const referenceIdUUID = uuidv4();
   const credForgeRequestBody = {
     auth_token: process.env.CREDU_API_KEY,
     client_id: process.env.CREDU_CLIENT_ID,
-    user_id: `NC${userId}`,
-    reference_id: `RF_${leadID}`,
+    user_id: `${userId}`,
+    reference_id: `${leadID}`,
     input_data: {
-      lead_id: `RM${leadID}`,
+      lead_id: `${leadID}`,
       declared_income: monthlyIncome,
       external: {
         bank_type: `bank_aa`,
@@ -202,7 +201,7 @@ export async function fetchCredForgeBankBre(payload: any): Promise<any> {
     );
     const saveCredForgeBankBreData: ILeadsApiLog = {
       customerID: userId,
-      api_type: LeadLogApiType.CREDFORGE_BUREAU_BANK_BRE_RAJAT,
+      api_type: LeadLogApiType.BANK_BRE,
       api_supplier: ApiSupplierType.CREDFORGE,
       api_endpoint_url: credForgeBankBreURL,
       api_method: "POST",
