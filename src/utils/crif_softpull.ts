@@ -102,7 +102,7 @@ export class CrifSoftPullService {
     this.client = axios.create({
       baseURL:
         config.baseURL ||
-        "https://test.crifhighmark.com/Inquiry/do.getSecureService",
+        "https://cir.crifhighmark.com/Inquiry/do.getSecureService",
 
       timeout: config.timeout || 30000,
     });
@@ -240,7 +240,7 @@ export class CrifSoftPullService {
     console.log("CRIF ACCESS CODE:", accessCode);
     console.log("CRIF PAYLOAD:", payload);
     const api_url =
-      "https://test.crifhighmark.com/Inquiry/do.getSecureService/DTC/initiate";
+      "https://cir.crifhighmark.com/Inquiry/do.getSecureService/DTC/initiate";
     const response = await axios.post(api_url, payload, {
       headers: {
         orderId: orderId,
