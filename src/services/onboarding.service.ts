@@ -108,7 +108,6 @@ import {
   verifyPanDigitap,
 } from "@/utils/surePass.utils";
 import {
-  convertRupeesToPaise,
   generatePennyDropId,
   generateRandomNumber,
   isPincodeBlocked,
@@ -145,6 +144,11 @@ import { createStepTrackerEntry } from "@/middlewares/stepCheck2.middleware";
 import { BureauType, CredForgeBreService } from "@/utils/credforge";
 import { CrifSoftPullService } from "@/utils/crif_softpull";
 import { digitapAABankConnect, digitapAACreateUrl } from "@/utils/digitap_aa";
+import {
+  buildMandateRequest,
+  verifyMandateResponse,
+  worldlineConfig,
+} from "@/utils/worldline_mandate";
 import * as fs from "fs";
 import puppeteer from "puppeteer";
 import { Readable } from "stream";
@@ -3132,7 +3136,7 @@ export class OnboardingService extends ResponseService {
     } = payload;
 
     const emandAmount = Number(config.emandateAmount);
-
+    // let customerId = 72028;
     const customerAccount = await this.customerAccountModel.findOne({
       where: { accountID: accountId },
       select: ["accountNo", "accountType", "bankIfsc", "bank"],
@@ -3212,105 +3216,202 @@ export class OnboardingService extends ResponseService {
       message: "",
       statusCode: 400,
     };
+    // if (isMandateRequired) {
+    //   if (customer && approval) {
+    //     // Here, we will create customer, basically emd create flow will trigger
+
+    //     const createCustomer = await this.razorPayPayments.createCustomer(
+    //       customerId,
+    //       leadId,
+    //       {
+    //         contact: customerMobile,
+    //         name: customerName,
+    //         email: customerEmail,
+    //       },
+    //       lead.lenderID,
+    //     );
+
+    //     if (!createCustomer.success) {
+    //       throw new InternalServerError(
+    //         "Failed to create emandate. Please try again later.",
+    //       );
+    //     }
+
+    //     // Once customer is created, now we need to create an order
+    //     const maxAmount = convertRupeesToPaise(approval.loanAmtApproved * 3);
+
+    //     const createOrder = await this.razorPayPayments.createOrder(
+    //       customerId,
+    //       leadId,
+    //       {
+    //         amount: 0,
+    //         currency: "INR",
+    //         customer_id: createCustomer.data.id,
+    //         method: "emandate",
+    //         token: {
+    //           auth_type: "",
+    //           expire_at: moment().add(24, "months").unix(),
+    //           max_amount: maxAmount,
+    //           bank_account: {
+    //             account_number: customerAccount.accountNo,
+    //             account_type: customerAccount.accountType.toLowerCase() + "s",
+    //             ifsc_code: customerAccount.bankIfsc,
+    //             beneficiary_name: customerName,
+    //           },
+    //         },
+    //       },
+    //       lead.lenderID,
+    //     );
+
+    //     // Now, we need to save response details in rpay_mandate table
+    //     let rpay_mandate_id = 0;
+
+    //     // const { data } = resp
+    //     // const { data } = createOrder
+
+    //     // Fields which are not in resp, need to be saved later
+    //     if (createOrder.success) {
+    //       [rpay_mandate_id] = await this.razorpayMandateModel.insert({
+    //         customerID: String(customerId),
+    //         leadID: String(leadId),
+    //         inv_id: "0", // Not in resp,
+    //         entity: createOrder.data.entity,
+    //         receipt: createOrder.data.receipt,
+    //         invoice_number: "0", // Not in resp
+    //         customer_id: createCustomer.data.id,
+    //         cust_name: createCustomer.data.name,
+    //         cust_email: createCustomer.data.email,
+    //         cust_contact: createCustomer.data.contact,
+    //         order_id: createOrder.data.id,
+    //         status: createOrder.data.status,
+    //         sms_status: "pending",
+    //         email_status: "pending",
+    //         short_url: "N/A",
+    //         type: "callback",
+    //         accountNo: customerAccount.accountNo,
+    //         accountType: customerAccount.accountType,
+    //         bank: customerAccount.bank,
+    //         ifsc: customerAccount.bankIfsc,
+    //         uid: config.defaultUserId,
+    //         emMaxamount: approval.loanAmtApproved * 3,
+    //         etype: "0",
+    //         token_id: "0",
+    //         res_response: JSON.stringify(createOrder.data),
+    //       });
+
+    //       await this.customerAccountModel.findAndUpdate(
+    //         { accountID: accountId },
+    //         { status: BankAccountStatus.VERIFIED },
+    //       );
+    //     }
+
+    //     if (rpay_mandate_id) {
+    //       const rpayMandate = await this.razorpayMandateModel.findOne({
+    //         where: { id: rpay_mandate_id, customerID: String(customerId) },
+    //       });
+    //       if (rpayMandate) {
+    //         response.data = {
+    //           customer_id: createCustomer.data.id,
+    //           order_id: createOrder.data.id,
+    //         };
+
+    //         if (
+    //           approval.loanAmtApproved <= emandAmount ||
+    //           customer.emandate_required === "1"
+    //         ) {
+    //           response.data = { status: 1 };
+    //           response.message = "Already Emandate";
+    //           response.statusCode = 200;
+    //         } else {
+    //           response.data = { ...response.data, status: 1 };
+    //           response.statusCode = 200;
+    //           response.message = "Success";
+    //         }
+    //       } else {
+    //         response.data = { status: 0 };
+    //         response.statusCode = 400;
+    //         response.message =
+    //           "Invalid Account Details or Customer Information";
+    //       }
+    //     } else {
+    //       response.data = { status: 0 };
+    //       response.statusCode = 400;
+    //       response.message = "Invalid Account Details or Customer Information";
+    //     }
+    //   } else {
+    //     response.statusCode = 404;
+    //     response.message = "Approval Not found.";
+    //     response.data = { status: 0 };
+    //   }
+    // }
     if (isMandateRequired) {
+      console.log("==================>customer", customer);
+      console.log("==================>Approval", approval);
       if (customer && approval) {
-        // Here, we will create customer, basically emd create flow will trigger
+        const maxAmount = approval.loanAmtApproved * 3;
+        const txnId = `RM${leadId}T${Date.now()}`;
+        const returnUrl = `${
+          worldlineConfig().returnBase
+        }/loan/e-mandate/worldline-callback`;
 
-        const createCustomer = await this.razorPayPayments.createCustomer(
-          customerId,
-          leadId,
-          {
-            contact: customerMobile,
-            name: customerName,
-            email: customerEmail,
-          },
-          lead.lenderID,
-        );
+        const built = buildMandateRequest({
+          txnId,
+          consumerId: String(customerId),
+          mobile: customerMobile,
+          email: customerEmail,
+          name: customerName,
+          accountNo: customerAccount.accountNo,
+          accountType: /current/i.test(customerAccount.accountType || "")
+            ? "Current"
+            : "Saving",
+          ifsc: customerAccount.bankIfsc,
+          maxAmount,
+          returnUrl,
+        });
 
-        if (!createCustomer.success) {
-          throw new InternalServerError(
-            "Failed to create emandate. Please try again later.",
-          );
-        }
-
-        // Once customer is created, now we need to create an order
-        const maxAmount = convertRupeesToPaise(approval.loanAmtApproved * 3);
-
-        const createOrder = await this.razorPayPayments.createOrder(
-          customerId,
-          leadId,
-          {
-            amount: 0,
-            currency: "INR",
-            customer_id: createCustomer.data.id,
-            method: "emandate",
-            token: {
-              auth_type: "",
-              expire_at: moment().add(24, "months").unix(),
-              max_amount: maxAmount,
-              bank_account: {
-                account_number: customerAccount.accountNo,
-                account_type: customerAccount.accountType.toLowerCase() + "s",
-                ifsc_code: customerAccount.bankIfsc,
-                beneficiary_name: customerName,
-              },
-            },
-          },
-          lead.lenderID,
-        );
-
-        // Now, we need to save response details in rpay_mandate table
         let rpay_mandate_id = 0;
+        [rpay_mandate_id] = await this.razorpayMandateModel.insert({
+          customerID: String(customerId),
+          leadID: String(leadId),
+          inv_id: "0",
+          entity: "worldline_emandate",
+          receipt: txnId,
+          invoice_number: "0",
+          customer_id: String(customerId),
+          cust_name: customerName,
+          cust_email: customerEmail,
+          cust_contact: customerMobile,
+          order_id: txnId,
+          status: "created",
+          sms_status: "pending",
+          email_status: "pending",
+          short_url: "N/A",
+          type: "worldline_callback",
+          accountNo: customerAccount.accountNo,
+          accountType: customerAccount.accountType,
+          bank: customerAccount.bank,
+          ifsc: customerAccount.bankIfsc,
+          uid: config.defaultUserId,
+          emMaxamount: maxAmount,
+          etype: "0",
+          token_id: "0",
+          res_response: JSON.stringify(built),
+        });
 
-        // const { data } = resp
-        // const { data } = createOrder
-
-        // Fields which are not in resp, need to be saved later
-        if (createOrder.success) {
-          [rpay_mandate_id] = await this.razorpayMandateModel.insert({
-            customerID: String(customerId),
-            leadID: String(leadId),
-            inv_id: "0", // Not in resp,
-            entity: createOrder.data.entity,
-            receipt: createOrder.data.receipt,
-            invoice_number: "0", // Not in resp
-            customer_id: createCustomer.data.id,
-            cust_name: createCustomer.data.name,
-            cust_email: createCustomer.data.email,
-            cust_contact: createCustomer.data.contact,
-            order_id: createOrder.data.id,
-            status: createOrder.data.status,
-            sms_status: "pending",
-            email_status: "pending",
-            short_url: "N/A",
-            type: "callback",
-            accountNo: customerAccount.accountNo,
-            accountType: customerAccount.accountType,
-            bank: customerAccount.bank,
-            ifsc: customerAccount.bankIfsc,
-            uid: config.defaultUserId,
-            emMaxamount: approval.loanAmtApproved * 3,
-            etype: "0",
-            token_id: "0",
-            res_response: JSON.stringify(createOrder.data),
-          });
-
-          await this.customerAccountModel.findAndUpdate(
-            { accountID: accountId },
-            { status: BankAccountStatus.VERIFIED },
-          );
-        }
+        await this.customerAccountModel.findAndUpdate(
+          { accountID: accountId },
+          { status: BankAccountStatus.VERIFIED },
+        );
 
         if (rpay_mandate_id) {
           const rpayMandate = await this.razorpayMandateModel.findOne({
-            where: { id: rpay_mandate_id, customerID: String(customerId) },
+            where: {
+              id: rpay_mandate_id,
+              customerID: String(customerId),
+            },
           });
-          if (rpayMandate) {
-            response.data = {
-              customer_id: createCustomer.data.id,
-              order_id: createOrder.data.id,
-            };
 
+          if (rpayMandate) {
             if (
               approval.loanAmtApproved <= emandAmount ||
               customer.emandate_required === "1"
@@ -3319,7 +3420,12 @@ export class OnboardingService extends ResponseService {
               response.message = "Already Emandate";
               response.statusCode = 200;
             } else {
-              response.data = { ...response.data, status: 1 };
+              response.data = {
+                provider: "worldline",
+                txnId,
+                request: built.request,
+                status: 1,
+              };
               response.statusCode = 200;
               response.message = "Success";
             }
@@ -3384,6 +3490,80 @@ export class OnboardingService extends ResponseService {
       response.statusCode,
       response.data,
       response.message,
+    );
+  };
+
+  // Verify Worldline Mandate
+  verifyWorldlineMandate = async (payload: {
+    customerId?: number;
+    loan_id?: number;
+    msg?: string;
+    response?: string;
+    responseString?: string;
+  }): Promise<IServiceResponse> => {
+    const pipe =
+      payload.msg || payload.response || payload.responseString || "";
+
+    const result = verifyMandateResponse(String(pipe));
+    if (!result.valid) {
+      return this.serviceResponse(
+        400,
+        {
+          status: 0,
+          ...result,
+        },
+        "Mandate response signature invalid",
+      );
+    }
+
+    if (!result.success) {
+      return this.serviceResponse(
+        400,
+        {
+          status: 0,
+          ...result,
+        },
+        result.errorMessage || result.message || "Mandate registration failed",
+      );
+    }
+
+    const txnId = result.clientTxnRef;
+    const mandate = await this.razorpayMandateModel.findOne({
+      where: {
+        order_id: txnId,
+      },
+    });
+
+    if (!mandate) {
+      return this.serviceResponse(
+        404,
+        {
+          status: 0,
+          ...result,
+        },
+        "Mandate record not found",
+      );
+    }
+
+    await this.razorpayMandateModel.findOneAndUpdate(
+      {
+        order_id: txnId,
+      },
+      {
+        status: "paid",
+        token_id: result.mandateRegNo || "0",
+        res_response: JSON.stringify(result),
+      },
+    );
+
+    return this.serviceResponse(
+      200,
+      {
+        status: 1,
+        mandateRegNo: result.mandateRegNo,
+        bankTransactionId: result.bankTransactionId,
+      },
+      "Mandate registered successfully",
     );
   };
 

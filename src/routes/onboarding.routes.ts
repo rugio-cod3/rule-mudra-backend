@@ -180,6 +180,17 @@ class CustomerOnboardingRoute implements Routes {
       this.customerOnboardingController.confirmBankDetails,
     );
 
+    this.router.post(
+      `${this.loanPath}/e-mandate/worldline-verify`,
+      this.authentication.isAuthenticatedCustomerByJWT,
+      this.customerOnboardingController.verifyWorldlineMandate,
+    );
+
+    this.router.post(
+      `${this.loanPath}/e-mandate/worldline-callback`,
+      this.customerOnboardingController.worldlineMandateCallback,
+    );
+
     // ==========================================================
     // =========================END OF NEW APIs LIST=============
 

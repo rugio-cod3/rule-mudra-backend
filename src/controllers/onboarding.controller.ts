@@ -2808,6 +2808,64 @@ class CustomerOnboardingController extends ResponseService {
       next(error);
     }
   };
+
+  verifyWorldlineMandate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { data, message, statusCode } =
+        await this.onboardingService.verifyWorldlineMandate({
+          customerId: req.customer.customerID,
+
+          loan_id: req.body.loan_id,
+
+          msg: req.body.msg || req.body.response || req.body.responseString,
+        });
+
+      this.sendResponse(res, statusCode, data, message);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  worldlineMandateCallback = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const frontendBase = (
+      process.env.WORLDLINE_FRONTEND_BASE || "http://localhost:5174"
+    ).replace(/\/$/, "");
+
+    console.log("WORLDLINE CALLBACK BODY ===>", req.body);
+    console.log("WORLDLINE CALLBACK QUERY ===>", req.query);
+
+    try {
+      const pipe =
+        req.body?.msg ||
+        req.body?.response ||
+        (typeof req.body === "string" ? req.body : "");
+
+      const { statusCode } =
+        await this.onboardingService.verifyWorldlineMandate({
+          msg: pipe,
+        });
+
+      const target =
+        statusCode === 200
+          ? `${frontendBase}/penny-drop-verify`
+          : `${frontendBase}/add-bank-account-status?status=0`;
+
+      return res.redirect(302, target);
+    } catch (error) {
+      return res.redirect(
+        302,
+        `${frontendBase}/add-bank-account-status?status=0`,
+      );
+    }
+  };
 }
 
 export default CustomerOnboardingController;
