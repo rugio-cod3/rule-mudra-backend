@@ -241,10 +241,8 @@ export async function digitapAABankConnect(payload: {
     message: "Bank BRE completed",
     data: {
       leadID,
-      decision:
-        credforgeResponse.output_data.rules_output.final_decision.Decision,
-      offerAmount:
-        credforgeResponse.output_data.rules_output.final_decision.LoanAmount,
+      decision: finalBankBre.Decision,
+      offerAmount: Number(finalBankBre.LoanAmount || 0),
       //   rawBankData: reportResponse.data,
       //   bankBreResponse: credforgeResponse,
     },
