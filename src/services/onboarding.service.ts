@@ -3557,8 +3557,8 @@ export class OnboardingService extends ResponseService {
     );
 
     await createStepTrackerEntry(
-      Number(payload.customerId),
-      Number(payload.loan_id),
+      Number(mandate.customerID),
+      Number(mandate.leadID),
       0,
       StepName.EMANDATE,
       "Repeat",
