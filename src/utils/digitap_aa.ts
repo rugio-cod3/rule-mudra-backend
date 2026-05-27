@@ -9,10 +9,11 @@ import { IApproval } from "@/interfaces/approval.interface";
 import { approvalService } from "@/services/approval.service";
 import { finboxService } from "@/services/thirdParty/finbox.service";
 import redisClient from "@/services/thirdParty/ioredis";
-import { fetchCredForgeBankBre } from "@/utils/finbud";
 import { cwd } from "process";
 import { DigitapAccountAggregatorService } from "./digitap_aa_service";
 require("dotenv").config({ path: cwd() + "/.env" });
+
+import { BankType, CredForgeBreService } from "./credforge";
 
 export async function digitapAACreateUrl(payload: {
   customerID: number;
@@ -159,15 +160,50 @@ export async function digitapAABankConnect(payload: {
     };
   }
 
-  const credforgeResponse = await fetchCredForgeBankBre({
-    userId: customerID.toString(),
-    referenceId: leadID.toString(),
-    rawData: reportResponse.data,
-    monthlyIncome: leadData.monthlyIncome,
-    leadID: leadID.toString(),
+  const credForgeBreService = new CredForgeBreService({
+    baseURL: process.env.CREDFORGE_BASE_URL!,
+    clientID: process.env.CREDU_CLIENT_ID!,
+    apiKey: process.env.CREDU_API_KEY!,
   });
 
-  if (!credforgeResponse?.output_data?.rules_output?.final_decision) {
+  const formattedBankBreData =
+    await credForgeBreService.buildBankDataFromDigitapAaReport(
+      reportResponse.data,
+    );
+
+  const credforgeResponse = await credForgeBreService.executeBankBre({
+    userId: customerID.toString(),
+    referenceId: leadID.toString(),
+    bankData: formattedBankBreData,
+    declaredIncome: Number(leadData?.monthlyIncome),
+    leadId: leadID.toString(),
+    bankType: BankType.BANK_AA,
+  });
+
+  // const credforgeResponse = await fetchCredForgeBankBre({
+  //   userId: customerID.toString(),
+  //   referenceId: leadID.toString(),
+  //   bankData: reportResponse.data,
+  //   monthlyIncome: leadData.monthlyIncome,
+  //   leadID: leadID.toString(),
+  // });
+
+  // if (!credforgeResponse?.output_data?.rules_output?.final_decision) {
+  //   return {
+  //     status: false,
+  //     message: "Unable to get Bank BRE decision",
+  //     data: {
+  //       retry: true,
+  //     },
+  //   };
+  // }
+
+  // const finalBankBre =
+  //   credforgeResponse?.output_data?.rules_output?.final_decision;
+  const finalBankBre =
+    credforgeResponse?.response?.output_data?.rules_output?.final_decision;
+
+  if (!credforgeResponse?.success || !finalBankBre) {
     return {
       status: false,
       message: "Unable to get Bank BRE decision",
@@ -176,9 +212,6 @@ export async function digitapAABankConnect(payload: {
       },
     };
   }
-
-  const finalBankBre =
-    credforgeResponse?.output_data?.rules_output?.final_decision;
 
   if (!finalBankBre) {
     return {

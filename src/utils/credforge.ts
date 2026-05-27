@@ -394,4 +394,50 @@ export class CredForgeBreService {
       data: error?.data,
     };
   }
+
+  public buildBankDataFromDigitapAaReport(report: any) {
+    const bankData = [];
+
+    for (const bank of report?.banks || []) {
+      for (const account of bank?.accounts || []) {
+        const holder = account?.customer_info?.holders?.[0];
+
+        bankData.push({
+          metadata: {
+            currency: account?.currency || "INR",
+            bank_name: bank?.bank || "",
+            ifsc_code: account?.ifsc_code || "",
+            account_type: account?.account_type || "",
+            employer_name: "",
+            account_number: account?.account_number || "",
+            account_holder_name: holder?.name || "",
+            statement_fetch_date: report?.report_fetch_time || "",
+            statement_start_date:
+              account?.transaction_start_date ||
+              report?.statement_start_date ||
+              "",
+            statement_end_date:
+              account?.transaction_end_date || report?.statement_end_date || "",
+          },
+          transaction_data: (account?.transactions || []).map((txn: any) => {
+            const amount = Number(txn?.amount || 0);
+
+            return {
+              txnId: txn?.transaction_id || txn?.reference || "",
+              type: amount < 0 ? "DEBIT" : "CREDIT",
+              amount: Math.abs(amount),
+              currentBalance: String(txn?.balance || "0"),
+              transactionTimestamp:
+                txn?.transaction_timestamp
+                  ?.replace("T", " ")
+                  .replace(".0", "") || `${txn?.date || ""} 00:00:00`,
+              narration: txn?.narration || "",
+            };
+          }),
+        });
+      }
+    }
+
+    return bankData;
+  }
 }
