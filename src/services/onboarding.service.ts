@@ -3561,7 +3561,7 @@ export class OnboardingService extends ResponseService {
       Number(mandate.leadID),
       0,
       StepName.EMANDATE,
-      "Repeat",
+      "New",
     );
 
     return this.serviceResponse(
