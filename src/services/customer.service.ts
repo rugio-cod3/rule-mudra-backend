@@ -619,7 +619,7 @@ class CustomerService extends ResponseService {
     await smsService.sendMessage({
       user: "hexanet",
       authKey: "92hOJEZhxZQ42",
-      sender: "KRDBHT",
+      sender: "TWOMTF", //TWOFIN, TMINFT
       mobile: mobile.toString(),
       // message: `Otp for website Login ${newOtp} and Valid for 1 Minutes. Do not share this OTP with anyone. KredBharat`,
       message: `Your OTP for website login is ${newOtp}. This OTP is valid for 1 minute. Please do not share it with anyone. TwoMinutes Fintech`,
