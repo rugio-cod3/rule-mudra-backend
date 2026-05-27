@@ -159,7 +159,10 @@ export class CredForgeBreService {
           data: response.data,
         };
       }
-
+      console.log(
+        "================================>BRE PAYLOAD",
+        requestPayload,
+      );
       const endpoint = `/execute/${this.clientID}/bureau_mobile_bre`;
       const fullURL = new URL(
         endpoint,
@@ -176,7 +179,7 @@ export class CredForgeBreService {
         api_method: "POST",
         status: 1,
         api_headers: JSON.stringify(this.getHeaders()),
-        api_request: JSON.stringify(payload),
+        api_request: JSON.stringify(requestPayload),
         api_response: JSON.stringify(response.data),
       };
       await leadApiLogService.create(saveCrifAuthorizedData);
