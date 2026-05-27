@@ -277,7 +277,9 @@ export class CredForgeBreService {
         declared_income: payload.declaredIncome,
         external: {
           bureau_type: payload.bureauType,
-          bureau_raw_json: this.encodeBase64(payload.rawBureauData),
+          bureau_raw_json: this.encodeBase64(
+            (payload.rawBureauData as any)?.bureauResponse,
+          ),
         },
       },
     };
