@@ -143,7 +143,7 @@ export class CredForgeBreService {
     payload: BureauBrePayload,
   ): Promise<CredForgeBreResponse> {
     try {
-      const requestPayload = this.buildBureauBrePayload(payload);
+      const requestPayload = await this.buildBureauBrePayload(payload);
       const response = await this.client.post(
         `/execute/${this.clientID}/bureau_mobile_bre`,
         requestPayload,
