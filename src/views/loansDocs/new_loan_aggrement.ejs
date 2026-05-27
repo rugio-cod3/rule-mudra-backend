@@ -18,7 +18,7 @@
       <p>
         This Loan Agreement ("Agreement") has been executed at Gurgaon, Haryana,
         on
-        <strong><%= data.effectiveDate || '[DATE TO BE FILLED]' %></strong> hereto, by and between: <%= data?.lenderInfo?.lender_display_name?.toUpperCase() || 'YASHIK FINLEASE PRIVATE LIMITED'%>, a company incorporated under the provisions of the Companies Act, 1956/2013, having CIN No. <%= data?.lenderInfo?.lender_info?.lenderCinNo || 'U65910HR1993PTC032032' %> its registered office at <%= data?.lenderInfo?.lender_info?.lenderAddress || 'SCO 3, Police line road, Ambala city, Haryana-134003, India' %> (hereinafter referred to as the "Lender", which expression shall, unless repugnant to the context or meaning thereof, include its successors and permitted assigns);
+        <strong><%= data.effectiveDate || '[DATE TO BE FILLED]' %></strong> hereto, by and between: <%= data?.lenderInfo?.lender_display_name?.toUpperCase()%>, a company incorporated under the provisions of the Companies Act, 1956/2013, having CIN No. <%= data?.lenderInfo?.lender_info?.lenderCinNo || 'U65910HR1993PTC032032' %> its registered office at <%= data?.lenderInfo?.lender_info?.lenderAddress || 'SCO 3, Police line road, Ambala city, Haryana-134003, India' %> (hereinafter referred to as the "Lender", which expression shall, unless repugnant to the context or meaning thereof, include its successors and permitted assigns);
       </p>
       <p style="text-align: center">AND</p>
       <p>
@@ -31,7 +31,7 @@
       <p>1. SCOPE</p>
       <ul>
         <li>
-          The Lender (<%= data.lenderInfo.lender_display_name || 'Yashik Finlease Private Limited'%>) is a Non-Banking Financial Company (NBFC) registered with the Reserve Bank of India (RBI) and engaged in the business of providing loans to its customers.
+          The Lender (<%= data.lenderInfo.lender_display_name%>) is a Non-Banking Financial Company (NBFC) registered with the Reserve Bank of India (RBI) and engaged in the business of providing loans to its customers.
         </li>
         <li>
           The Borrower had approached the Lender for a loan not exceeding INR <strong><%= data.appliedAmount ? data.appliedAmount.toLocaleString('en-IN') : '50,000' %></strong> (Rupees <%= data.appliedAmountWords || 'Fifty Thousand only' %>)

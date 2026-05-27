@@ -2473,7 +2473,7 @@ class CustomerOnboardingController extends ResponseService {
       const getLeadApiLogInfo = await this.leadApiLogService.findOne(
         {
           customerID,
-          api_type: "surepass_digilocker_eaadhaar",
+          api_type: "digitap_get_details",
         },
         ["*"],
         [{ column: "id", order: "desc" }],
@@ -2488,9 +2488,9 @@ class CustomerOnboardingController extends ResponseService {
       }
 
       const leadApiLogResponse = JSON.parse(getLeadApiLogInfo?.api_response);
-      const leadApiLogName = leadApiLogResponse?.UidData?.Poi?.["$"]?.name;
-      const leadApiLogDob = leadApiLogResponse?.UidData?.Poi?.["$"]?.dob;
-      const leadApiLogGender = leadApiLogResponse?.UidData?.Poi?.["$"]?.gender;
+      const leadApiLogName = leadApiLogResponse?.model?.name;
+      const leadApiLogDob = leadApiLogResponse?.model?.dob;
+      const leadApiLogGender = leadApiLogResponse?.model?.gender;
 
       // const extractedLastFourDigits = aaadhar_last_four_digits?.slice(-4) || "";
       // const extractAdhaarDigit = aaadhar_last_four_digits?.slice(-4) || aaadhar_last_four_digits?.slice(-2);

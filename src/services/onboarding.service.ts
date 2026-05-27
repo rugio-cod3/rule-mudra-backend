@@ -4523,6 +4523,8 @@ export class OnboardingService extends ResponseService {
     const ipcDpdInt = 0.1;
     const dpdPenality = 500;
     const dpdPenalityGstPercentage = 90;
+    const backendBaseUrl = process.env.BACKEND_BASE_URL;
+    const frontendBaseUrl = process.env.FRONTEND_BASE_URL;
 
     // Override ROI with config value for template
     approval_detail.roi = +config.rate_of_interest;
@@ -4545,6 +4547,8 @@ export class OnboardingService extends ResponseService {
       dpdPenality,
       dpdPenalityGstPercentage,
       purpose,
+      backendBaseUrl,
+      frontendBaseUrl,
     };
     console.log(
       "mail data -------------------------------------------------> ",
