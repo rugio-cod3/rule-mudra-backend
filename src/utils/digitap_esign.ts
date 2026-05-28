@@ -61,7 +61,7 @@ const digitapEsignHeaders = {
   authorization: digitapAuthHeader, // Try without Basic prefix, lowercase
 };
 
-export async function digitapEsignInitialize(
+/* export async function digitapEsignInitialize(
   payload: ISurepassEsignInitiateRequestPayload,
 ): Promise<ISurepassEsignInitiateResponse> {
   const digitapEsignInitializeURL = `${getDigitapBaseURL()}/v1/generate-esign`;
@@ -220,6 +220,175 @@ export async function digitapEsignInitialize(
     );
     console.error("Error response headers:", error.response?.headers);
     console.error("Full error config:", JSON.stringify(error.config, null, 2));
+
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        error.message ||
+        "Error in digitap e-sign initialization",
+    };
+  }
+} */
+
+export async function digitapEsignInitialize(
+  payload: ISurepassEsignInitiateRequestPayload,
+): Promise<ISurepassEsignInitiateResponse> {
+  const digitapEsignInitializeURL = `${getDigitapBaseURL()}/v1/generate-esign`;
+  const { customerID, callback_url } = payload;
+
+  if (!digitapEsignBaseURL) {
+    return {
+      success: false,
+      message: "Digitap base URL not configured",
+    };
+  }
+
+  if (!digitapClientId || !digitapClientSecret) {
+    return {
+      success: false,
+      message: "Digitap credentials not configured",
+    };
+  }
+
+  const getCustomerInfo = await customerService.findOne({ customerID });
+
+  if (!getCustomerInfo) {
+    return {
+      success: false,
+      message: "Customer info not found",
+    };
+  }
+
+  const getLeadInfo = await leadService.findOne(
+    { customerID },
+    ["*"],
+    [{ column: "leadID", order: "desc" }],
+  );
+
+  if (!getLeadInfo?.leadID) {
+    return {
+      success: false,
+      message: "Lead info not found",
+    };
+  }
+
+  const timestamp = Date.now();
+
+  const uniqueId = `loan_agreement_${customerID}_${getLeadInfo.leadID}_${timestamp}`;
+
+  const getAggrementPdfLink = await generateAggrementPdf(
+    customerID,
+    getLeadInfo.leadID,
+  );
+
+  if (!getAggrementPdfLink.status || !getAggrementPdfLink.data) {
+    return {
+      success: false,
+      message:
+        getAggrementPdfLink.message || "Failed to generate agreement PDF",
+    };
+  }
+
+  const agreementPdfUrl = getAggrementPdfLink.data;
+
+  const digitapEsignInitializeBody = {
+    uniqueId,
+    signers: [
+      {
+        email: getCustomerInfo.email,
+        location: "India",
+        mobile: getCustomerInfo.mobile.toString(),
+        name: getCustomerInfo.name,
+      },
+    ],
+    reason: "Loan Agreement",
+    templateId: digitapLoanAgreementTemplateId,
+    fileName: `Loan_Agreement_${customerID}_${getLeadInfo.leadID}_${timestamp}.pdf`,
+    multiSignerDocId: uniqueId,
+  };
+
+  try {
+    console.log("Digitap E-sign request URL:", digitapEsignInitializeURL);
+    console.log(
+      "Digitap E-sign request body:",
+      JSON.stringify(digitapEsignInitializeBody, null, 2),
+    );
+    console.log("Downloading PDF from our S3:", agreementPdfUrl);
+
+    const pdfResponse = await axios.get(agreementPdfUrl, {
+      responseType: "arraybuffer",
+      validateStatus: () => true,
+    });
+
+    if (pdfResponse.status < 200 || pdfResponse.status >= 300) {
+      console.error("Failed to download agreement PDF from S3");
+      console.error("S3 status:", pdfResponse.status);
+      console.error(
+        "S3 response:",
+        Buffer.isBuffer(pdfResponse.data)
+          ? pdfResponse.data.toString("utf8")
+          : pdfResponse.data,
+      );
+
+      return {
+        success: false,
+        message: "Agreement PDF not found on S3",
+      };
+    }
+
+    const pdfBuffer = Buffer.from(pdfResponse.data);
+
+    const digitapEsignResponse = await axios.post(
+      digitapEsignInitializeURL,
+      digitapEsignInitializeBody,
+      { headers: digitapEsignHeaders },
+    );
+
+    console.log(
+      "Digitap E-sign response:",
+      JSON.stringify(digitapEsignResponse.data, null, 2),
+    );
+
+    const { code, model } = digitapEsignResponse.data;
+
+    if (code !== "200" || !model?.docId || !model?.url) {
+      return {
+        success: false,
+        message:
+          digitapEsignResponse.data.message || "Failed to initialize e-sign",
+      };
+    }
+
+    const { docId, url } = model;
+
+    console.log("Uploading PDF to Digitap S3:", url);
+
+    const uploadResponse = await axios.put(url, pdfBuffer, {
+      headers: {
+        "Content-Type": "application/pdf",
+      },
+    });
+
+    console.log("PDF upload response status:", uploadResponse.status);
+
+    const separator = callback_url.includes("?") ? "&" : "?";
+    const callbackUrlWithClientId = `${callback_url}${separator}client_id=${docId}`;
+
+    return {
+      success: true,
+      status_code: 200,
+      message: "Digitap E-Sign URL generated",
+      data: {
+        client_id: docId,
+        url: `https://sdk.digitap.ai/e-sign/templateesignprocess.html?docId=${docId}&redirect_url=${encodeURIComponent(
+          callbackUrlWithClientId,
+        )}&error_url=${encodeURIComponent(callbackUrlWithClientId)}`,
+        token: docId,
+      },
+    };
+  } catch (error) {
+    console.error("Digitap E-sign initialization error:", error.message);
 
     return {
       success: false,
